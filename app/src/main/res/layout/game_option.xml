@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".GameOption">
+
+    <TextView
+        android:textSize="25sp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/bow_setup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bowling_setup" />
+
+    <TextView
+        android:textSize="17sp"
+        android:labelFor="@+id/round_label"
+        android:layout_below="@+id/bow_setup"
+        android:id="@+id/round_label"
+        android:text="@string/round"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_below="@+id/round_label"
+        android:id="@+id/round_entry"
+        android:width="200dp"
+        android:height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:textSize="17sp"
+        android:layout_below="@+id/round_entry"
+        android:id="@+id/map_label"
+        android:text="Map : "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:layout_below="@+id/map_label"
+        android:width="200px"
+        android:height="200px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/map_option">
+    </Spinner>
+
+</RelativeLayout>
