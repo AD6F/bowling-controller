@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="FormTitle">
+        <item name="android:textSize">17sp</item>
+        <item name="fontWeight">@integer/material_motion_duration_long_2</item>
+    </style>
+</resources>
