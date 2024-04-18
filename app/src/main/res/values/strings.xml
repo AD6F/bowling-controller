@@ -2,7 +2,7 @@
     <string name="app_name">My Application</string>
     <string name="round">Round : </string>
     <string name="bowling_setup">Bownling Setup</string>
-    <string name="main_menu_title">Main menu</string>
+    <string name="main_menu_title">Bowling game</string>
     <string name="play">Play</string>
     <string name="setting">Setting</string>
     <string name="leave">Leave</string>
@@ -21,4 +21,6 @@
     <string name="map">Map :</string>
     <string name="back">Back</string>
     <string name="player">Player :</string>
+    <string name="none">None</string>
+    <string name="add">+Add</string>
 </resources>

@@ -4,7 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".GameOption">
+    tools:context=".GameOption"
+    android:padding="13dp">
 
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/navbar"
@@ -75,9 +76,16 @@
     </Spinner>
 
     <TextView
+        android:id="@+id/player_section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/FormTitle"
         android:text="@string/player"
         android:layout_below="@+id/map_spinner" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add"
+        android:layout_below="@+id/player_section" />
 </RelativeLayout>

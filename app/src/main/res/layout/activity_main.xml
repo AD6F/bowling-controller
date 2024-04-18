@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:flexDirection="column"
+    app:justifyContent="center"
+    app:alignItems="center"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/main_menu"
-        android:textSize="25sp"
-        android:layout_centerHorizontal="true"
+        android:textSize="45sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/main_menu_title" />
 
     <Button
         android:id="@+id/play"
-        android:layout_centerHorizontal="true"
+        style="@style/MainMenuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/play"
@@ -26,7 +28,7 @@
 
     <Button
         android:id="@+id/setting"
-        android:layout_centerHorizontal="true"
+        style="@style/MainMenuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/setting"
@@ -34,10 +36,10 @@
 
     <Button
         android:id="@+id/leave"
-        android:layout_centerHorizontal="true"
+        style="@style/MainMenuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/leave"
         android:layout_below="@id/setting"
         android:onClick="leave"/>
-</RelativeLayout>
+</com.google.android.flexbox.FlexboxLayout>

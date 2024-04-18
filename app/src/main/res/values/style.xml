@@ -2,6 +2,11 @@
 <resources>
     <style name="FormTitle">
         <item name="android:textSize">17sp</item>
-        <item name="fontWeight">@integer/material_motion_duration_long_2</item>
+    </style>
+
+    <style name="MainMenuButton">
+        <item name="android:width">170dp</item>
+        <item name="android:height">80dp</item>
+        <item name="android:textSize">35sp</item>
     </style>
 </resources>
