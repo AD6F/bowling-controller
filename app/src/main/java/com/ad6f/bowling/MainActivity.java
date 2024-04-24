@@ -24,22 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void leave(View view) {
         // Not working if we open other activities
-        var alert = new AlertDialog.Builder(this);
-        var input = new EditText(this);
-        input.setSingleLine();
-        input.setHint("Player name");
-        alert.setView(input);
-
-        alert.setTitle("Add Player : ");
-        alert.setPositiveButton("Ok", (dialog, which) -> {
-            System.out.println(dialog+" "+ which);
-        });
-
-        alert.setNegativeButton("Cancel", (dialog, which) -> {
-
-        });
-        alert.show();
-
         //this.finish();
     }
 

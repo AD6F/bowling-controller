@@ -84,8 +84,17 @@
         android:layout_below="@+id/map_spinner" />
 
     <Button
+        android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add"
-        android:layout_below="@+id/player_section" />
+        android:layout_below="@+id/player_section"
+        android:onClick="add"/>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_below="@+id/add"
+        android:id="@+id/list"
+        android:text="@string/none"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
