@@ -11,7 +11,6 @@
         android:id="@+id/navbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="17dp"
         app:alignItems="center"
         app:flexDirection="row"
         app:flexWrap="wrap"
@@ -96,5 +95,6 @@
         android:id="@+id/list"
         android:text="@string/none"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:flexDirection="column"/>
 </RelativeLayout>
