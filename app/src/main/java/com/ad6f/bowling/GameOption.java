@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.flexbox.FlexboxLayout;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.function.DoubleConsumer;
 
 public class GameOption extends AppCompatActivity {
     private final Set<String> playersSet = new LinkedHashSet<>();
@@ -21,11 +19,10 @@ public class GameOption extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.game_option);
+        setContentView(R.layout.activity_game_option);
         playerBox = this.findViewById(R.id.list);
         addButton = this.findViewById(R.id.add);
     }
-
     public void back(View view) {
         this.startActivity(new Intent(this, MainActivity.class));
     }
