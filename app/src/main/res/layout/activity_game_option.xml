@@ -97,13 +97,4 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:flexDirection="column"/>
-
-
-    <ImageButton
-        android:layout_below="@+id/list"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:src="@mipmap/cast"
-        android:maxWidth="20dp"
-        android:background="#6750a4" />
 </RelativeLayout>
