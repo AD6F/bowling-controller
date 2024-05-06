@@ -2,8 +2,6 @@ package com.ad6f.bowling.cast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.ad6f.bowling.MainActivity;
 import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.SessionManagerListener;
 
@@ -45,7 +43,7 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
     @Override
     public void onSessionStarted(@NonNull CastSession castSession, @NonNull String s) {
         try {
-            castSession.setMessageReceivedCallbacks(CastInfo.NAMESPACE, (castDevice, namespace, message) -> {
+            castSession.setMessageReceivedCallbacks(CastInfo.SETTING_NAMESPACE, (castDevice, namespace, message) -> {
                 // NEED TO ADD CODE
             });
 

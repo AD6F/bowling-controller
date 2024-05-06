@@ -5,8 +5,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     app:justifyContent="center"
-    app:flexWrap="wrap"
     app:alignContent="center"
+    app:flexWrap="wrap"
     tools:context=".CastConnect">
     <ImageView
         android:layout_width="220dp"
@@ -19,7 +19,8 @@
         android:text="@string/connect_your_chromecast"
         android:textSize="28sp" />
 
-    <Button
+    <androidx.mediarouter.app.MediaRouteButton
+        android:id="@+id/cast_button"
         android:layout_width="150sp"
         android:layout_height="60sp"
         android:text="@string/choose"
