@@ -37,64 +37,90 @@
             android:text="@string/next" />
     </com.google.android.flexbox.FlexboxLayout>
 
-
-    <TextView
-        android:labelFor="@+id/round_label"
-        android:layout_below="@+id/navbar"
-        android:id="@+id/round_label"
-        style="@style/FormTitle"
-        android:text="@string/round"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <com.google.android.material.slider.Slider
-        android:layout_below="@+id/round_label"
-        android:id="@+id/round_entry"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:valueFrom="1"
-        android:stepSize="1"
-        android:valueTo="10" />
-
-    <TextView
-        style="@style/FormTitle"
-        android:layout_below="@+id/round_entry"
-        android:id="@+id/map_label"
-        android:text="@string/map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Spinner
-        android:id="@+id/map_spinner"
-        android:width="200dp"
-        android:height="200dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:entries="@array/map_option"
-        android:layout_below="@+id/map_label">
-    </Spinner>
-
-    <TextView
-        android:id="@+id/player_section"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/FormTitle"
-        android:text="@string/player"
-        android:layout_below="@+id/map_spinner" />
-
-    <Button
-        android:id="@+id/add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add"
-        android:layout_below="@+id/player_section"
-        android:onClick="add"/>
-
     <com.google.android.flexbox.FlexboxLayout
-        android:layout_below="@+id/add"
-        android:id="@+id/list"
-        android:text="@string/none"
-        android:layout_width="wrap_content"
+        android:id="@+id/options"
+        android:layout_below="@+id/navbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:flexDirection="column"/>
+        app:flexDirection="column"
+        app:alignItems="center">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:labelFor="@+id/round_label"
+                android:id="@+id/round_label"
+                style="@style/FormTitle"
+                android:text="@string/round"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.slider.Slider
+                android:layout_below="@+id/round_label"
+                android:id="@+id/round_entry"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:valueFrom="1"
+                android:stepSize="1"
+                android:valueTo="10" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/FormTitle"
+                android:id="@+id/map_label"
+                android:text="@string/map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/map_spinner"
+                android:layout_width="300dp"
+                android:layout_height="50sp"
+                android:entries="@array/map_option"
+                android:layout_below="@+id/map_label" />
+        </RelativeLayout>
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/player_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexDirection="row"
+            app:alignItems="center"
+            app:justifyContent="center">
+            <TextView
+                android:id="@+id/player_section"
+                android:layout_width="275dp"
+                android:layout_height="wrap_content"
+                style="@style/FormTitle"
+                android:text="@string/player"
+                android:layout_below="@+id/map_spinner" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add"
+                android:layout_height="25sp"
+                android:layout_width="25dp"
+                android:text="@string/add"
+                android:onClick="add"
+                android:background="#6750A4"
+                android:textColor="@color/white" />
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/list"
+                android:text="@string/none"
+                android:layout_width="300sp"
+                android:layout_height="wrap_content"
+                app:flexDirection="column" />
+        </RelativeLayout>
+    </com.google.android.flexbox.FlexboxLayout>
 </RelativeLayout>
