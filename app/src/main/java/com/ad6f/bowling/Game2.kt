@@ -13,12 +13,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -32,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
+import kotlin.math.round
 
 class Game2 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +49,7 @@ class Game2 : ComponentActivity() {
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
                         Navbar()
-                        PlayerList()
+                        GameOptions()
                     }
                 }
             }
@@ -73,9 +78,43 @@ fun Navbar() {
 }
 
 /**
+ * The component that contain the slider for chosing the round.
+ */
+@Composable
+fun Round() {
+    var currentValue by rememberSaveable { mutableFloatStateOf(1f) }
+    Text(String.format("Round(%.0f)", round(currentValue)))
+    Slider(valueRange = 1f..10f, steps = 8, value = currentValue, onValueChange = {currentValue = it})
+}
+
+@Composable
+fun MapSelector() {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    var options = arrayListOf("New York", "Undercover", "Cold Sea", "Infiltration")
+
+    var currentValue by rememberSaveable { mutableStateOf(options[0]) }
+
+    Column {
+        Text("Map")
+
+        Button(onClick = { expanded = !expanded}) {
+            Text(currentValue)
+        }
+
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            options.forEach {
+                DropdownMenuItem(
+                    text = { Text(it) },
+                    onClick = { currentValue = it; expanded = false; }
+                )
+            }
+        }
+    }
+
+}
+/**
  * The component that contains all the components related to players setup.
  */
-@Preview
 @Composable
 fun PlayerList() {
     var isDialogShown by rememberSaveable { mutableStateOf(false) }
@@ -86,7 +125,7 @@ fun PlayerList() {
 
     Row {
         Column {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                 Text("Players")
 
                 Button(enabled = players.size < 4, onClick = {isDialogShown = true}) {
@@ -165,7 +204,7 @@ fun AddPlayerDialog(
                             label = { Text("Player") }
                         )
 
-                        Row(horizontalArrangement = Arrangement.Center) {
+                        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                             Button(onClick = { close() }) {
                                 Text("Cancel")
                             }
@@ -178,5 +217,15 @@ fun AddPlayerDialog(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun GameOptions() {
+    Column {
+        Round()
+        MapSelector()
+        PlayerList()
     }
 }
