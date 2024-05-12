@@ -3,6 +3,7 @@ package com.ad6f.bowling
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,12 +21,15 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
+import com.google.android.flexbox.FlexboxLayout
 
 class Game2 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +40,9 @@ class Game2 : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    PlayerList()
-                    AddPlayerDialog()
+                    Column(modifier = Modifier.padding(20.dp)) {
+                        PlayerList()
+                    }
                 }
             }
         }
@@ -49,28 +54,55 @@ val players = mutableStateListOf<String>("121", "12")
 @Preview
 @Composable
 fun PlayerList() {
-    LazyColumn {
-        items (players) {
-            p -> Button(onClick = {
-                players.remove(p)
-            }) {
-                Text(p)
+    var isDialogShown by rememberSaveable { mutableStateOf(false) }
+
+    AddPlayerDialog(isDialogShown) {
+        isDialogShown = false
+    }
+
+    Row {
+        Column {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("Players")
+
+                Button(enabled = players.size < 4, onClick = {isDialogShown = true}) {
+                    Text("+")
+                }
+            }
+
+            LazyColumn {
+                items (players) {
+                        p -> Button(onClick = {
+                    players.remove(p)
+                }) {
+                    Text(p)
+                }
+                }
             }
         }
     }
 }
 
-@Preview
 @Composable
-fun AddPlayerDialog() {
+fun AddPlayerDialog(
+    isShown: Boolean,
+    closeDialog: () -> Unit
+) {
     // Le rememberSaveable permet de save même si l'écran rotate
-    var isShown by rememberSaveable { mutableStateOf(true) }
     var inputValue by rememberSaveable { mutableStateOf("") }
     var canAdd by rememberSaveable { mutableStateOf(false) }
+    var errorInput by rememberSaveable { mutableStateOf("") }
+
+    fun close() {
+        inputValue = ""
+        canAdd = false
+        errorInput = ""
+        closeDialog()
+    }
 
     if(isShown) {
         Dialog(
-            onDismissRequest = { isShown = false },
+            onDismissRequest = { close() },
         ) {
             Surface(
                 color = Color.White,
@@ -78,27 +110,40 @@ fun AddPlayerDialog() {
             ) {
                 Row(Modifier.padding(10.dp)) {
                     Column {
+                        if(errorInput.isNotEmpty()) {
+                            Text(errorInput)
+                        }
+
                         OutlinedTextField(
                             value = inputValue,
                             onValueChange = {
                                 inputValue = it;
 
+                                if(players.contains(it)) {
+                                    canAdd = false
+                                    errorInput = "Player already exists."
+                                }
+
                                 // These if else are there to set if the Add button is enabled or not
-                                if(it.isEmpty() && canAdd) {
+                                else if(it.isEmpty() && canAdd) {
+                                    errorInput = "Player cannot be empty."
                                     canAdd = false;
-                                } else if(it.isNotEmpty() && !canAdd) {
+                                }
+
+                                else if(it.isNotEmpty() && !canAdd) {
+                                    errorInput = ""
                                     canAdd = true;
                                 }
                             },
-                            label = { Text("PlayerName") }
+                            label = { Text("Player") }
                         )
 
-                        Row {
-                            Button(onClick = { isShown = false }) {
+                        Row(horizontalArrangement = Arrangement.Center) {
+                            Button(onClick = { close() }) {
                                 Text("Cancel")
                             }
 
-                            Button(enabled = canAdd, onClick = { players.add(inputValue); isShown = false }) {
+                            Button(enabled = canAdd, onClick = { players.add(inputValue); close() }) {
                                 Text("Add")
                             }
                         }
