@@ -28,6 +28,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void play(View view) {
-        this.startActivity(new Intent(this, GameOption.class));
+        this.startActivity(new Intent(this, Game2.class));
     }
 }
