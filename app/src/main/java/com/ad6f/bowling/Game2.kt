@@ -1,5 +1,6 @@
 package com.ad6f.bowling
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,12 +26,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
-import com.google.android.flexbox.FlexboxLayout
 
 class Game2 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +43,7 @@ class Game2 : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
+                        Navbar()
                         PlayerList()
                     }
                 }
@@ -49,8 +52,29 @@ class Game2 : ComponentActivity() {
     }
 }
 
-val players = mutableStateListOf<String>("121", "12")
+val players = mutableStateListOf<String>()
 
+@Preview
+@Composable
+fun Navbar() {
+    val context = LocalContext.current;
+
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+        Button(onClick = { context.startActivity(Intent(context, MainActivity::class.java)) }) {
+            Text("back")
+        }
+
+        Text(fontSize = 25.sp, text = "Bowling Setup")
+
+        Button(onClick = { /*TODO*/ }) {
+            Text("next")
+        }
+    }
+}
+
+/**
+ * The component that contains all the components related to players setup.
+ */
 @Preview
 @Composable
 fun PlayerList() {
@@ -83,6 +107,9 @@ fun PlayerList() {
     }
 }
 
+/**
+ * Dialog(Popup) to add a player for the game.
+ */
 @Composable
 fun AddPlayerDialog(
     isShown: Boolean,
