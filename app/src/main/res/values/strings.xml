@@ -28,5 +28,5 @@
     <string name="choose">choose</string>
     <string name="sendjson">sendjson</string>
     <string name="add_player">add player</string>
-    <string name="title_activity_game2">Game2</string>
+    <string name="title_activity_game_setup">GameSetup</string>
 </resources>

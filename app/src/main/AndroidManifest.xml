@@ -13,9 +13,9 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".Game2"
+            android:name=".GameSetup"
             android:exported="false"
-            android:label="@string/title_activity_game2"
+            android:label="@string/title_activity_game_setup"
             android:theme="@style/Theme.MyApplication" />
 
         <meta-data
@@ -32,11 +32,6 @@
             android:name=".MainActivity2"
             android:exported="false"
             android:label="@string/title_activity_main2"
-            android:theme="@style/Theme.MyApplication" />
-        <activity
-            android:name=".GameOption"
-            android:exported="false"
-            android:label="@string/game_option"
             android:theme="@style/Theme.MyApplication" />
         <activity
             android:name=".MainActivity"
