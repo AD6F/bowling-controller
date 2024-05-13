@@ -49,11 +49,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void leave(View view) throws JSONException {
-        var object = new JSONObject();
-        object.put("msg", "I always comeback!");
 
-        // Get la currentSession et envoie un message
-        sessionManager.getCurrentCastSession().sendMessage(CastInfo.SETTING_NAMESPACE, object.toString());
     }
 
     public void play(View view) {

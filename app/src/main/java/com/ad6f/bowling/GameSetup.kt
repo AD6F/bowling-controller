@@ -89,7 +89,7 @@ fun Navbar() {
             jsonObject.put("players", JSONArray(players));
             jsonObject.put("round", round(roundOptionValue));
             jsonObject.put("map", mapOptions.indexOf(mapOptionValue));
-            castSession?.sendMessage(CastInfo.GAME_NAMESPACE, jsonObject.toString());
+            castSession?.sendMessage(CastInfo.SETTING_NAMESPACE, jsonObject.toString());
             context.startActivity(Intent(context, GameLoop::class.java));
         }) {
             Text("next")

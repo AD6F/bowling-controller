@@ -17,6 +17,7 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
 
     @Override
     public void onSessionEnded(@NonNull CastSession castSession, int i) {
+        mainActivity.popupLoadingCast(false);
         mainActivity.setAreButtonVisible(false);
     }
 
@@ -27,7 +28,8 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
 
     @Override
     public void onSessionResumeFailed(@NonNull CastSession castSession, int i) {
-
+        mainActivity.popupLoadingCast(false);
+        mainActivity.setAreButtonVisible(false);
     }
 
     @Override
