@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Bowling Game</string>
     <string name="round">Round</string>
     <string name="bowling_setup">Bownling Setup</string>
     <string name="main_menu_title">Bowling game</string>
@@ -29,4 +29,5 @@
     <string name="sendjson">sendjson</string>
     <string name="add_player">add player</string>
     <string name="title_activity_game_setup">GameSetup</string>
+    <string name="title_activity_home">Home</string>
 </resources>

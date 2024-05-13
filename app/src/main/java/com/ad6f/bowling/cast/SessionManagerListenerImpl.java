@@ -2,6 +2,8 @@ package com.ad6f.bowling.cast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.ad6f.bowling.MainActivity;
 import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.SessionManagerListener;
 
@@ -11,11 +13,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class SessionManagerListenerImpl implements SessionManagerListener<CastSession> {
-    private AppCompatActivity mainActivity;
+    private MainActivity mainActivity;
 
     @Override
     public void onSessionEnded(@NonNull CastSession castSession, int i) {
-
+        mainActivity.setAreButtonVisible(false);
     }
 
     @Override
@@ -31,6 +33,7 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
     @Override
     public void onSessionResumed(@NonNull CastSession castSession, boolean b) {
 
+        mainActivity.setAreButtonVisible(true);
     }
 
     @Override
@@ -50,6 +53,7 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
                 // NEED TO ADD CODE
             });
 
+            mainActivity.setAreButtonVisible(true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -65,7 +69,7 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
 
     }
 
-    public SessionManagerListenerImpl(AppCompatActivity mainActivity) {
+    public SessionManagerListenerImpl(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 }

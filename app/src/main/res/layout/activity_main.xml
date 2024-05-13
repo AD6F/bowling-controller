@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:text="@string/play"
         android:layout_below="@id/main_menu"
-        android:onClick="play"/>
+        android:onClick="play" />
 
 
     <Button
