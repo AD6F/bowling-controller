@@ -2,21 +2,28 @@ package com.ad6f.bowling
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ScrollView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -30,7 +37,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,8 +65,14 @@ class Game2 : ComponentActivity() {
         }
     }
 }
+val mapOptions = arrayListOf("New York", "Undercover", "Cold Sea", "Infiltration")
+const val OPTION_TITLE = 20;
 
+// state to send to the chromecast
 val players = mutableStateListOf<String>()
+var roundOptionValue by mutableFloatStateOf(1f)
+var mapOptionValue by mutableStateOf(mapOptions[0])
+
 
 @Preview
 @Composable
@@ -82,30 +97,26 @@ fun Navbar() {
  */
 @Composable
 fun Round() {
-    var currentValue by rememberSaveable { mutableFloatStateOf(1f) }
-    Text(String.format("Round(%.0f)", round(currentValue)))
-    Slider(valueRange = 1f..10f, steps = 8, value = currentValue, onValueChange = {currentValue = it})
+    Text(fontSize = OPTION_TITLE.sp, text = String.format("Round(%.0f)", round(roundOptionValue)))
+    Slider(valueRange = 1f..10f, steps = 8, value = roundOptionValue, onValueChange = {roundOptionValue = it})
 }
 
 @Composable
 fun MapSelector() {
     var expanded by rememberSaveable { mutableStateOf(false) }
-    var options = arrayListOf("New York", "Undercover", "Cold Sea", "Infiltration")
-
-    var currentValue by rememberSaveable { mutableStateOf(options[0]) }
 
     Column {
-        Text("Map")
+        Text(fontSize = OPTION_TITLE.sp, text = "Map")
 
         Button(onClick = { expanded = !expanded}) {
-            Text(currentValue)
+            Text(mapOptionValue)
         }
 
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            options.forEach {
+            mapOptions.forEach {
                 DropdownMenuItem(
                     text = { Text(it) },
-                    onClick = { currentValue = it; expanded = false; }
+                    onClick = { mapOptionValue = it; expanded = false; }
                 )
             }
         }
@@ -126,10 +137,16 @@ fun PlayerList() {
     Row {
         Column {
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                Text("Players")
+                Text(fontSize = OPTION_TITLE.sp, text = "Players")
 
                 Button(enabled = players.size < 4, onClick = {isDialogShown = true}) {
                     Text("+")
+                }
+            }
+
+            if(players.size == 0) {
+                Column {
+                    Text(text = "No player found")
                 }
             }
 
