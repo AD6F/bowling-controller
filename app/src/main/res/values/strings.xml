@@ -30,4 +30,5 @@
     <string name="add_player">add player</string>
     <string name="title_activity_game_setup">GameSetup</string>
     <string name="title_activity_home">Home</string>
+    <string name="title_activity_game_loop">GameLoop</string>
 </resources>

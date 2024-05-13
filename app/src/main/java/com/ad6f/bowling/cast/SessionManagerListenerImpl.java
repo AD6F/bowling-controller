@@ -34,11 +34,13 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
     public void onSessionResumed(@NonNull CastSession castSession, boolean b) {
 
         mainActivity.setAreButtonVisible(true);
+        mainActivity.popupLoadingCast(false);
     }
 
     @Override
     public void onSessionResuming(@NonNull CastSession castSession, @NonNull String s) {
-
+        mainActivity.popupLoadingCast(true);
+        mainActivity.setAreButtonVisible(false);
     }
 
     @Override
@@ -49,11 +51,13 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
     @Override
     public void onSessionStarted(@NonNull CastSession castSession, @NonNull String s) {
         try {
+
             castSession.setMessageReceivedCallbacks(CastInfo.SETTING_NAMESPACE, (castDevice, namespace, message) -> {
                 // NEED TO ADD CODE
             });
 
             mainActivity.setAreButtonVisible(true);
+            mainActivity.popupLoadingCast(false);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -61,7 +65,7 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
 
     @Override
     public void onSessionStarting(@NonNull CastSession castSession) {
-
+        mainActivity.popupLoadingCast(true);
     }
 
     @Override

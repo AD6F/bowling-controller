@@ -35,7 +35,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.ad6f.bowling.cast.CastInfo
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
+import com.google.android.gms.cast.framework.CastContext
+import com.google.android.gms.cast.framework.CastSession
+import org.json.JSONArray
+import org.json.JSONObject
 import kotlin.math.round
 
 class GameSetup : ComponentActivity() {
@@ -77,7 +82,16 @@ fun Navbar() {
 
         Text(fontSize = 25.sp, text = "Bowling Setup")
 
-        Button(onClick = { /*TODO*/ }) {
+        Button(enabled = players.isNotEmpty(), onClick = {
+            val castSession = CastContext.getSharedInstance(context).sessionManager.currentCastSession;
+            val jsonObject = JSONObject();
+
+            jsonObject.put("players", JSONArray(players));
+            jsonObject.put("round", round(roundOptionValue));
+            jsonObject.put("map", mapOptions.indexOf(mapOptionValue));
+            castSession?.sendMessage(CastInfo.GAME_NAMESPACE, jsonObject.toString());
+            context.startActivity(Intent(context, GameLoop::class.java));
+        }) {
             Text("next")
         }
     }

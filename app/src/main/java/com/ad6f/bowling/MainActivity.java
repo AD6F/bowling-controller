@@ -3,11 +3,10 @@ package com.ad6f.bowling;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import com.ad6f.bowling.cast.CastInfo;
 import com.ad6f.bowling.cast.SessionManagerListenerImpl;
 import com.google.android.gms.cast.framework.CastButtonFactory;
@@ -18,8 +17,6 @@ import com.google.android.gms.cast.framework.SessionManagerListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import lombok.Setter;
-
 public class MainActivity extends AppCompatActivity {
     private CastContext castContext;
     private SessionManager sessionManager;
@@ -27,11 +24,15 @@ public class MainActivity extends AppCompatActivity {
     private SessionManagerListener<CastSession> mSessionManagerListener =
             new SessionManagerListenerImpl(this);
 
-    public boolean areButtonVisible = false;
+    public static boolean isCastActivated = false;
+
+    private Dialog loadingCastDialog = null;
+
+    private Dialog castErrorDialog = null;
 
     public void setAreButtonVisible(boolean areButtonVisible) {
-        if(this.areButtonVisible != areButtonVisible) {
-            this.areButtonVisible = areButtonVisible;
+        if(isCastActivated != areButtonVisible) {
+            isCastActivated = areButtonVisible;
         }
     }
 
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void play(View view) {
-        if(areButtonVisible)  {
+        if(isCastActivated)  {
             this.startActivity(new Intent(this, GameSetup.class));
         } else {
             popupCast();
@@ -64,10 +65,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void popupCast() {
-        new AlertDialog.Builder(this)
-            .setTitle("Bowling")
-            .setMessage("You need to connect to the chromecast first.")
-            .setPositiveButton("Ok", (dialog, which) -> {})
-            .show();
+        if(castErrorDialog == null) {
+            castErrorDialog = new AlertDialog.Builder(this)
+                .setTitle("Bowling")
+                .setMessage("You need to connect to the chromecast first.")
+                .setPositiveButton("Ok", (dialog, which) -> {})
+                .create();
+        }
+
+        castErrorDialog.show();
+    }
+
+    public void popupLoadingCast(boolean open) {
+        if(loadingCastDialog == null) {
+            loadingCastDialog = new AlertDialog.Builder(this)
+               .setTitle("Bowling")
+               .setMessage("Connecting to chromecast...")
+               .setCancelable(false)
+               .create();
+        }
+
+        if(open) {
+            loadingCastDialog.show();
+        } else {
+            loadingCastDialog.hide();
+        }
     }
 }
