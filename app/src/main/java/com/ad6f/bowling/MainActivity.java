@@ -1,6 +1,8 @@
 package com.ad6f.bowling;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -28,21 +30,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean areButtonVisible = false;
 
     public void setAreButtonVisible(boolean areButtonVisible) {
-        this.areButtonVisible = areButtonVisible;
-        refreshButtons();
-    }
-
-    public void refreshButtons() {
-        findViewById(R.id.play).setEnabled(areButtonVisible);
-        findViewById(R.id.setting).setEnabled(areButtonVisible);
+        if(this.areButtonVisible != areButtonVisible) {
+            this.areButtonVisible = areButtonVisible;
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        refreshButtons();
 
         // Lier le boutton au Cast
         CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), findViewById(R.id.cast_media));
@@ -60,6 +56,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void play(View view) {
-        this.startActivity(new Intent(this, GameSetup.class));
+        if(areButtonVisible)  {
+            this.startActivity(new Intent(this, GameSetup.class));
+        } else {
+            popupCast();
+        }
+    }
+
+    private void popupCast() {
+        new AlertDialog.Builder(this)
+            .setTitle("Bowling")
+            .setMessage("You need to connect to the chromecast first.")
+            .setPositiveButton("Ok", (dialog, which) -> {})
+            .show();
     }
 }
