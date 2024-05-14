@@ -1,39 +1,32 @@
 package com.ad6f.bowling;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import com.ad6f.bowling.cast.CastInfo;
 import com.ad6f.bowling.cast.SessionManagerListenerImpl;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
-import com.google.android.gms.cast.framework.SessionManager;
-import com.google.android.gms.cast.framework.SessionManagerListener;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
-    private CastContext castContext;
-    private SessionManager sessionManager;
-
-    private SessionManagerListener<CastSession> mSessionManagerListener =
-            new SessionManagerListenerImpl(this);
-
     public static boolean isCastActivated = false;
+
+    public static boolean isCastLoading = false;
 
     private Dialog loadingCastDialog = null;
 
-    private Dialog castErrorDialog = null;
+    public void refreshButton() {
+        findViewById(R.id.play).setEnabled(isCastActivated);
+        findViewById(R.id.setting).setEnabled(isCastActivated);
+    }
 
     public void setAreButtonVisible(boolean areButtonVisible) {
-        if(isCastActivated != areButtonVisible) {
-            isCastActivated = areButtonVisible;
-        }
+        isCastActivated = areButtonVisible;
+        refreshButton();
     }
 
     @Override
@@ -41,11 +34,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(loadingCastDialog == null) {
+            loadingCastDialog = new AlertDialog.Builder(this)
+                .setTitle("Bowling")
+                .setMessage("Connecting to chromecast...")
+                .setCancelable(false)
+                .create();
+        }
+
         // Lier le boutton au Cast
         CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), findViewById(R.id.cast_media));
-        castContext = CastContext.getSharedInstance(getApplicationContext());
-        sessionManager = castContext.getSessionManager();
-        sessionManager.addSessionManagerListener(mSessionManagerListener, CastSession.class);
+        var castContext = CastContext.getSharedInstance(getApplicationContext());
+        var sessionManager = castContext.getSessionManager();
+        var sessionManagerListener = new SessionManagerListenerImpl(this);
+        sessionManager.addSessionManagerListener(sessionManagerListener, CastSession.class);
     }
 
     public void leave(View view) throws JSONException {
@@ -53,38 +55,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void play(View view) {
-        if(isCastActivated)  {
-            this.startActivity(new Intent(this, GameSetup.class));
-        } else {
-            popupCast();
-        }
+        this.startActivity(new Intent(this, GameSetup.class));
     }
 
-    private void popupCast() {
-        if(castErrorDialog == null) {
-            castErrorDialog = new AlertDialog.Builder(this)
-                .setTitle("Bowling")
-                .setMessage("You need to connect to the chromecast first.")
-                .setPositiveButton("Ok", (dialog, which) -> {})
-                .create();
-        }
-
-        castErrorDialog.show();
-    }
-
-    public void popupLoadingCast(boolean open) {
-        if(loadingCastDialog == null) {
-            loadingCastDialog = new AlertDialog.Builder(this)
-               .setTitle("Bowling")
-               .setMessage("Connecting to chromecast...")
-               .setCancelable(false)
-               .create();
-        }
-
-        if(open) {
+    private void refreshLoadingCastDialog() {
+        if(isCastLoading) {
             loadingCastDialog.show();
         } else {
             loadingCastDialog.hide();
         }
+    }
+
+    public void popupLoadingCast(boolean isLoading) {
+        isCastLoading = isLoading;
+        refreshLoadingCastDialog();
+    }
+
+    // This is override because, this function is executed after the onCreate function and when we
+    // rotate the function onCreate is recalled and this function too, we use this function to put the popup and
+    // the buttons to their old state.
+    @Override
+    protected void onStart() {
+        super.onStart();
+        refreshButton();
+        refreshLoadingCastDialog();
     }
 }
