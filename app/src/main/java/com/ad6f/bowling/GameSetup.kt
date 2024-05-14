@@ -1,6 +1,7 @@
 package com.ad6f.bowling
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,13 +63,16 @@ class GameSetup : ComponentActivity() {
         }
     }
 }
-val mapOptions = arrayListOf("New York", "Undercover", "Cold Sea", "Infiltration")
+val mapOptions = arrayListOf("Classic", "New York", "Undercover", "Cold Sea", "Infiltration")
 const val OPTION_TITLE = 20;
 
 // state to send to the chromecast
 val players = mutableStateListOf<String>()
-var roundOptionValue by mutableFloatStateOf(1f)
+var roundOptionValue by mutableFloatStateOf(4f)
 var mapOptionValue by mutableStateOf(mapOptions[0])
+
+// IsPlayerDialog open :
+var isDialogShown by mutableStateOf(false)
 
 
 @Preview
@@ -103,7 +108,7 @@ fun Navbar() {
 @Composable
 fun Round() {
     Text(fontSize = OPTION_TITLE.sp, text = String.format("Round(%.0f)", round(roundOptionValue)))
-    Slider(valueRange = 1f..10f, steps = 8, value = roundOptionValue, onValueChange = {roundOptionValue = it})
+    Slider(valueRange = 4f..10f, steps = 5, value = roundOptionValue, onValueChange = {roundOptionValue = it})
 }
 
 @Composable
@@ -133,11 +138,7 @@ fun MapSelector() {
  */
 @Composable
 fun PlayerList() {
-    var isDialogShown by rememberSaveable { mutableStateOf(false) }
-
-    AddPlayerDialog(isDialogShown) {
-        isDialogShown = false
-    }
+    AddPlayerDialog()
 
     Row {
         Column {
@@ -168,27 +169,42 @@ fun PlayerList() {
     }
 }
 
+enum class ErrorType(val value: String) {
+    NONE(""),
+    UNIQUE("Player already exists."),
+    EMPTY("Player cannot be empty.")
+}
+
+fun getPlayerError(value: String): ErrorType {
+    return if(value.isEmpty()) {
+        ErrorType.EMPTY
+    } else if(players.contains(value)) {
+        ErrorType.UNIQUE
+    } else {
+        ErrorType.NONE
+    }
+}
+
 /**
  * Dialog(Popup) to add a player for the game.
  */
 @Composable
-fun AddPlayerDialog(
-    isShown: Boolean,
-    closeDialog: () -> Unit
-) {
+fun AddPlayerDialog() {
     // Le rememberSaveable permet de save même si l'écran rotate
     var inputValue by rememberSaveable { mutableStateOf("") }
-    var canAdd by rememberSaveable { mutableStateOf(false) }
-    var errorInput by rememberSaveable { mutableStateOf("") }
+
+    // To disable the button when we first open the dialog because it is empty
+    var isStart by rememberSaveable { mutableStateOf(true) }
+    var errorType by rememberSaveable { mutableStateOf(ErrorType.NONE) }
 
     fun close() {
         inputValue = ""
-        canAdd = false
-        errorInput = ""
-        closeDialog()
+        isStart = true
+        errorType = ErrorType.NONE
+        isDialogShown = false
     }
 
-    if(isShown) {
+    if(isDialogShown) {
         Dialog(
             onDismissRequest = { close() },
         ) {
@@ -198,40 +214,37 @@ fun AddPlayerDialog(
             ) {
                 Row(Modifier.padding(10.dp)) {
                     Column {
-                        if(errorInput.isNotEmpty()) {
-                            Text(errorInput)
-                        }
-
                         OutlinedTextField(
                             value = inputValue,
+                            isError = errorType != ErrorType.NONE,
+                            singleLine = true,
                             onValueChange = {
-                                inputValue = it;
+                                if(isStart) isStart = false
 
-                                if(players.contains(it)) {
-                                    canAdd = false
-                                    errorInput = "Player already exists."
-                                }
+                                if(it.length <= 10) {
+                                    inputValue = it;
 
-                                // These if else are there to set if the Add button is enabled or not
-                                else if(it.isEmpty() && canAdd) {
-                                    errorInput = "Player cannot be empty."
-                                    canAdd = false;
-                                }
-
-                                else if(it.isNotEmpty() && !canAdd) {
-                                    errorInput = ""
-                                    canAdd = true;
+                                    val tmpError = getPlayerError(inputValue);
+                                    if(tmpError != errorType) {
+                                        errorType = tmpError
+                                    }
                                 }
                             },
-                            label = { Text("Player") }
+                            label = {
+                                Text("Player")
+                            }
                         )
+
+                        if(errorType != ErrorType.NONE) {
+                            Text(text = errorType.value, color = Color.Red, fontSize = 14.sp)
+                        }
 
                         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                             Button(onClick = { close() }) {
                                 Text("Cancel")
                             }
 
-                            Button(enabled = canAdd, onClick = { players.add(inputValue); close() }) {
+                            Button(enabled = !isStart && errorType == ErrorType.NONE, onClick = { players.add(inputValue); close() }) {
                                 Text("Add")
                             }
                         }

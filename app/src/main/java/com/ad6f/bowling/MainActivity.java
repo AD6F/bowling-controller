@@ -3,13 +3,19 @@ package com.ad6f.bowling;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
 import com.ad6f.bowling.cast.SessionManagerListenerImpl;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
+
 import org.json.JSONException;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,8 +56,32 @@ public class MainActivity extends AppCompatActivity {
         sessionManager.addSessionManagerListener(sessionManagerListener, CastSession.class);
     }
 
-    public void leave(View view) throws JSONException {
+    SensorManager sensorManager = null;
+    Sensor sensor = null;
 
+    public void leave(View view) throws JSONException {
+        System.out.println("Hello World!");
+        if (sensorManager == null) {
+            sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+
+            var sensorEventListener = new SensorEventListener() {
+                @Override
+                public void onSensorChanged(SensorEvent event) {
+                    System.out.println(event.values[1]);
+                }
+
+                @Override
+                public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+                }
+            };
+
+            sensorManager.registerListener(sensorEventListener, sensor, 1);
+        }
+
+
+        System.out.println(sensor.getMaximumRange());
     }
 
     public void play(View view) {
@@ -73,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
     // This is override because, this function is executed after the onCreate function and when we
     // rotate the function onCreate is recalled and this function too, we use this function to put the popup and
-    // the buttons to their old state.
+    // the buttons to their currentState.
     @Override
     protected void onStart() {
         super.onStart();
