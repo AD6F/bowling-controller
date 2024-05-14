@@ -47,7 +47,8 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
 
     @Override
     public void onSessionStartFailed(@NonNull CastSession castSession, int i) {
-
+        mainActivity.popupLoadingCast(false);
+        mainActivity.setAreButtonVisible(false);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
         try {
 
             castSession.setMessageReceivedCallbacks(CastInfo.SETTING_NAMESPACE, (castDevice, namespace, message) -> {
-                // NEED TO ADD CODE
+                System.out.println(message);
             });
 
             mainActivity.setAreButtonVisible(true);
