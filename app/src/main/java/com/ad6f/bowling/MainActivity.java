@@ -56,32 +56,8 @@ public class MainActivity extends AppCompatActivity {
         sessionManager.addSessionManagerListener(sessionManagerListener, CastSession.class);
     }
 
-    SensorManager sensorManager = null;
-    Sensor sensor = null;
-
     public void leave(View view) throws JSONException {
-        System.out.println("Hello World!");
-        if (sensorManager == null) {
-            sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 
-            var sensorEventListener = new SensorEventListener() {
-                @Override
-                public void onSensorChanged(SensorEvent event) {
-                    System.out.println(event.values[1]);
-                }
-
-                @Override
-                public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-                }
-            };
-
-            sensorManager.registerListener(sensorEventListener, sensor, 1);
-        }
-
-
-        System.out.println(sensor.getMaximumRange());
     }
 
     public void play(View view) {
