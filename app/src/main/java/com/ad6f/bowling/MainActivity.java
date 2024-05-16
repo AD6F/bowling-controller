@@ -42,10 +42,10 @@ public class MainActivity extends AppCompatActivity {
 
         if(loadingCastDialog == null) {
             loadingCastDialog = new AlertDialog.Builder(this)
-                    .setTitle("Bowling")
-                    .setMessage("Connecting to chromecast...")
-                    .setCancelable(false)
-                    .create();
+                .setTitle("Bowling")
+                .setMessage("Connecting to chromecast...")
+                .setCancelable(false)
+                .create();
         }
 
         // Lier le boutton au Cast

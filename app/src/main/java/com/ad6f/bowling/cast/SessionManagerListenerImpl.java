@@ -1,14 +1,19 @@
 package com.ad6f.bowling.cast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.ad6f.bowling.MainActivity;
 import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.SessionManagerListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 public class SessionManagerListenerImpl implements SessionManagerListener<CastSession> {
-    private final MainActivity mainActivity;
+    private MainActivity mainActivity;
 
     @Override
     public void onSessionEnded(@NonNull CastSession castSession, int i) {
