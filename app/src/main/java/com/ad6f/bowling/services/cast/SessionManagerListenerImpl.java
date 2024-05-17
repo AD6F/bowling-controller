@@ -2,14 +2,14 @@ package com.ad6f.bowling.services.cast;
 
 import androidx.annotation.NonNull;
 
-import com.ad6f.bowling.MainActivity;
+import com.ad6f.bowling.MainMenu;
 import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.SessionManagerListener;
 
 import java.io.IOException;
 
 public class SessionManagerListenerImpl implements SessionManagerListener<CastSession> {
-    private MainActivity mainActivity;
+    private MainMenu mainActivity;
 
     @Override
     public void onSessionEnded(@NonNull CastSession castSession, int i) {
@@ -72,7 +72,7 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
 
     }
 
-    public SessionManagerListenerImpl(MainActivity mainActivity) {
+    public SessionManagerListenerImpl(MainMenu mainActivity) {
         this.mainActivity = mainActivity;
     }
 }

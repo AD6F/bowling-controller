@@ -7,7 +7,7 @@
     app:flexDirection="column"
     app:justifyContent="center"
     app:alignItems="center"
-    tools:context=".MainActivity">
+    tools:context=".MainMenu">
 
     <androidx.mediarouter.app.MediaRouteButton
         android:id="@+id/cast_media"

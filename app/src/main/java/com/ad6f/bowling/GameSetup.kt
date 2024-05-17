@@ -58,7 +58,7 @@ class GameSetup : ComponentActivity() {
                     Column(modifier = Modifier.padding(20.dp)) {
 
                         Navbar(
-                            backSending = { startActivity(Intent(context, MainActivity::class.java)) },
+                            backSending = { startActivity(Intent(context, MainMenu::class.java)) },
                             pageTitle = "Bowling Setup",
                             canGoNext = players.isNotEmpty(),
                             nextSending = {

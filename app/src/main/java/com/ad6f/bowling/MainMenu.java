@@ -11,7 +11,7 @@ import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
 
-public class MainActivity extends AppCompatActivity {
+public class MainMenu extends AppCompatActivity {
     public static boolean isCastActivated = false;
 
     public static boolean isCastLoading = false;
