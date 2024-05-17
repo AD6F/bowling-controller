@@ -1,30 +1,29 @@
 package com.ad6f.bowling;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import com.ad6f.bowling.components.mainmenu.LoadingCastDialog;
 import com.ad6f.bowling.services.cast.SessionManagerListenerImpl;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
 
 public class MainMenu extends AppCompatActivity {
-    public static boolean isCastActivated = false;
+    public static boolean areButtonVisible = false;
 
     public static boolean isCastLoading = false;
 
-    private Dialog loadingCastDialog = null;
+    private LoadingCastDialog loadingCastDialog = null;
 
     public void refreshButton() {
-        findViewById(R.id.play).setEnabled(isCastActivated);
-        findViewById(R.id.setting).setEnabled(isCastActivated);
+        findViewById(R.id.play).setEnabled(areButtonVisible);
+        findViewById(R.id.setting).setEnabled(areButtonVisible);
     }
 
     public void setAreButtonVisible(boolean areButtonVisible) {
-        isCastActivated = areButtonVisible;
+        MainMenu.areButtonVisible = areButtonVisible;
         refreshButton();
     }
 
@@ -34,11 +33,7 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if(loadingCastDialog == null) {
-            loadingCastDialog = new AlertDialog.Builder(this)
-                .setTitle("Bowling")
-                .setMessage("Connecting to chromecast...")
-                .setCancelable(false)
-                .create();
+            loadingCastDialog = new LoadingCastDialog(this);
         }
 
         // Lier le boutton au Cast
@@ -57,17 +52,9 @@ public class MainMenu extends AppCompatActivity {
         this.startActivity(new Intent(this, GameSetup.class));
     }
 
-    private void refreshLoadingCastDialog() {
-        if(isCastLoading) {
-            loadingCastDialog.show();
-        } else {
-            loadingCastDialog.hide();
-        }
-    }
-
     public void popupLoadingCast(boolean isLoading) {
         isCastLoading = isLoading;
-        refreshLoadingCastDialog();
+        loadingCastDialog.refresh(isCastLoading);
     }
 
     // This is override because, this function is executed after the onCreate function and when we
@@ -77,6 +64,6 @@ public class MainMenu extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         refreshButton();
-        refreshLoadingCastDialog();
+        loadingCastDialog.refresh(isCastLoading);
     }
 }
