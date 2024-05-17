@@ -3,27 +3,19 @@ package com.ad6f.bowling
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import com.ad6f.bowling.cast.CastInfo
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.cast.framework.CastSession
@@ -54,7 +46,7 @@ class GameLoop : ComponentActivity() {
 
 @Composable
 fun Pause() {
-    SmallFloatingActionButton(onClick = { /*TODO*/ }) {
+    SmallFloatingActionButton(onClick = { }) {
         Icon(Icons.Default.Settings, contentDescription = "Pause")
     }
 }
@@ -63,12 +55,18 @@ fun Pause() {
 fun LaunchButton(
     castSession: CastSession
 ) {
+
     Button(onClick = {
         val jsonObject = JSONObject()
-        jsonObject.put("rotation", 35.75f)
-        jsonObject.put("force", 30.99f)
 
-        castSession.sendMessage(CastInfo.GAME_NAMESPACE, jsonObject.toString())
+        //val rotation = GameLoop.rotationYs.last().y / GameLoop.rotationSensor!!.maximumRange * 100
+        //val force = GameLoop.linearAccelerationYs.last().y / GameLoop.linearSensor!!.maximumRange * 100
+        //println("force : $force and rotation : $rotation")
+
+        //jsonObject.put("rotation", rotation)
+        //jsonObject.put("force", force)
+
+        //castSession.sendMessage(CastInfo.GAME_NAMESPACE, jsonObject.toString())
     }) {
         Text(text = "Launch")
     }

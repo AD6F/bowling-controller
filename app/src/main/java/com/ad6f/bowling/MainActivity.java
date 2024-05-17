@@ -1,31 +1,15 @@
 package com.ad6f.bowling;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.compose.material.icons.Icons;
-import androidx.compose.material.icons.IconsKt;
-import androidx.compose.ui.input.pointer.PointerIcon;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Icon;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-
-import com.ad6f.bowling.cast.SessionManagerListenerImpl;
-import com.ad6f.bowling.components.NavbarKt;
-import com.google.android.flexbox.FlexboxLayout;
+import com.ad6f.bowling.services.cast.SessionManagerListenerImpl;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
-
 import org.json.JSONException;
 
 public class MainActivity extends AppCompatActivity {

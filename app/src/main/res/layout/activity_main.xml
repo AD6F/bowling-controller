@@ -29,7 +29,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/play"
-        android:layout_below="@id/main_menu"
         android:onClick="play" />
 
 
@@ -38,8 +37,7 @@
         style="@style/MainMenuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/setting"
-        android:layout_below="@id/play" />
+        android:text="@string/setting" />
 
     <Button
         android:id="@+id/leave"
@@ -47,6 +45,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/leave"
-        android:layout_below="@id/setting"
         android:onClick="leave"/>
 </com.google.android.flexbox.FlexboxLayout>

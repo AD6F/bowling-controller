@@ -35,7 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ad6f.bowling.cast.CastInfo
+import com.ad6f.bowling.services.cast.CastInfo
 import com.ad6f.bowling.components.gamesetup.AddPlayerDialog
 import com.ad6f.bowling.components.Navbar
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
@@ -80,7 +80,7 @@ class GameSetup : ComponentActivity() {
         }
     }
 }
-val mapOptions = arrayListOf("Classic", "New York", "The Matrix", "Cold Sea", "Infiltration", "Galaxy")
+val mapOptions = arrayListOf("Classic", "New York", "The Matrix", "Cold Sea", "Infiltration", "Galaxy", "Grimace")
 const val OPTION_TITLE = 20;
 
 // state to send to the chromecast
@@ -89,11 +89,11 @@ var roundOptionValue by mutableFloatStateOf(4f)
 var mapOptionValue by mutableStateOf(mapOptions[0])
 
 /**
- * The component that contain the slider for chosing the round.
+ * The component that contain the slider for choosing the round.
  */
 @Composable
 fun RoundSetup() {
-    Text(fontSize = OPTION_TITLE.sp, text = String.format("Round(%.0f)", round(roundOptionValue)))
+    Text(fontSize = OPTION_TITLE.sp, text = "Round(${round(roundOptionValue).toInt()})")
     Slider(valueRange = 4f..10f, steps = 5, value = roundOptionValue, onValueChange = {roundOptionValue = it})
 }
 
