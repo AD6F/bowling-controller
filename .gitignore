@@ -14,5 +14,5 @@
 .cxx
 .idea
 .vscode
-.gradle
 local.properties
+.gradle
