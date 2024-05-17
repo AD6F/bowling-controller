@@ -5,53 +5,56 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.ToString;
 
 @ToString
-@AllArgsConstructor
 public class SensorCalculator {
-    private Sensor sensor;
+    public SensorEventListener sensorEventListener = null;
 
-    private static boolean isAddingIntoList = true;
+    public List<Float> percentsList = new ArrayList<>();
 
-    private SensorManager sensorManager;
+    private boolean isListening = false;
 
-    public List<Coordinate> coordinateList = new ArrayList<>();
+    public float getBestPercent() {
+        return Collections.max(percentsList);
+    }
 
-    public final float MAX_SENSOR_VALUE;
+    public void start() {
+        if (!isListening) {
+            isListening = true;
+        }
+    }
 
-    public SensorCalculator(SensorManager sensorManager, int sensorType, SensorAction sensorAction) {
-        this.sensorManager = sensorManager;
-        this.sensor = sensorManager.getDefaultSensor(sensorType);
-        MAX_SENSOR_VALUE = sensor.getMaximumRange();
+    public void close() {
+        if (isListening) {
+            percentsList.clear();
+            isListening = false;
+        }
+    }
 
-        sensorManager.registerListener(
-            new SensorEventListener() {
-                @Override
-                public void onSensorChanged(SensorEvent event) {
-                    if(isAddingIntoList) {
-                        var currentCoordinate = Coordinate.fromArray(event.values);
-                        coordinateList.add(currentCoordinate);
+    public SensorCalculator(SensorManager sensorManager, Sensor sensor, Coordinate coordinate, SensorAction sensorAction) {
+        sensorEventListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (isListening) {
+                    System.out.println("LISTENING");
+                    var currentCoordinate = event.values[coordinate.ordinal()] / sensor.getMaximumRange() * 100;
 
-                        if(sensorType == Sensor.TYPE_LINEAR_ACCELERATION && currentCoordinate.y - coordinateList.get(coordinateList.size() - 1).y > 0) {
-                            // To block the all the other SensorCalculator, to add data into their list
-                            isAddingIntoList = false;
-
-                            // To unblock all SensorCalculator, if the data was successfully send.
-                            isAddingIntoList = sensorAction.sendData();
-                        }
+                    if (sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION && !percentsList.isEmpty() && percentsList.get(percentsList.size() - 1) - currentCoordinate >= 10) {
+                        System.out.println("Stopped adding into list");
+                        sensorAction.sendData();
                     }
-                }
 
-                @Override
-                public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+                    percentsList.add(currentCoordinate);
                 }
-            },
-            sensor,
-            1
-        );
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+        };
+
+        sensorManager.registerListener(sensorEventListener, sensor, 1);
     }
 }

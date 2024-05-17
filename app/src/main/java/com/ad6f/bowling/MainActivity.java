@@ -10,7 +10,6 @@ import com.ad6f.bowling.services.cast.SessionManagerListenerImpl;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
-import org.json.JSONException;
 
 public class MainActivity extends AppCompatActivity {
     public static boolean isCastActivated = false;
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         sessionManager.addSessionManagerListener(sessionManagerListener, CastSession.class);
     }
 
-    public void leave(View view) throws JSONException {
+    public void leave(View view) {
 
     }
 
