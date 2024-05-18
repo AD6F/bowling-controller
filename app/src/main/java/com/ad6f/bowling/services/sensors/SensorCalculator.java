@@ -21,6 +21,10 @@ public class SensorCalculator {
         return Collections.max(percentsList);
     }
 
+    public float getLastPercent() {
+        return percentsList.get(percentsList.size() - 1);
+    }
+
     public void start() {
         if (!isListening) {
             isListening = true;

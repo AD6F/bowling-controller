@@ -7,9 +7,7 @@ import androidx.annotation.NonNull;
 public class LoadingCastDialog extends CastDialog {
     public LoadingCastDialog(@NonNull Context context) {
         super(context);
-        super.setTitle("Bowling");
         super.setMessage("Connecting to chromecast...");
         super.setCancelable(false);
-        super.isShowing();
     }
 }

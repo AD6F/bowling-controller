@@ -56,7 +56,7 @@ class GameLoop : ComponentActivity() {
                 //println("ROTATION : ${rotationSensor?.percentsList}")
                 println("BEST_LINEAR Y : ${linearSensorCal?.bestPercent}")
                 println("BEST_ROTATION Y : ${rotationSensorCal?.bestPercent}")
-                println("BEST_GRAVITY X : ${gravitySensorCal?.bestPercent}")
+                println("LAST_GRAVITY X : ${gravitySensorCal?.lastPercent}")
                 rotationSensorCal?.close()
                 gravitySensorCal?.close()
                 linearSensorCal?.close()

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 public class CastDialog extends AlertDialog {
     public CastDialog(@NonNull Context context) {
         super(context);
+        super.setTitle("Bowling");
     }
 
     public void refresh(boolean isLoading) {
