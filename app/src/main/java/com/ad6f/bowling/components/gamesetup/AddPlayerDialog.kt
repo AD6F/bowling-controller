@@ -34,8 +34,8 @@ fun getPlayerError(value: String, players: List<String>): ErrorType {
  */
 @Composable
 fun AddPlayerDialog(
-    isShown: Boolean,
-    setIsShown: (isShown: Boolean) -> Unit,
+    isVisible: Boolean,
+    setIsVisible: (isVisible: Boolean) -> Unit,
     players: SnapshotStateList<String>
 ) {
     // Le rememberSaveable permet de save même si l'écran rotate
@@ -49,12 +49,12 @@ fun AddPlayerDialog(
         inputValue = ""
         isStart = true
         errorType = ErrorType.NONE
-        setIsShown(false)
+        setIsVisible(false)
     }
 
     GenericDialog(
-        isVisible = isShown,
-        title = { Text("Bowling") },
+        isVisible,
+        title = "Bowling",
         closeAction = { close() },
         cancelButton = {
             Button(onClick = { close() }) {

@@ -126,7 +126,7 @@ fun MapSetup() {
 fun PlayerSetup() {
     var isDialogShown by rememberSaveable { mutableStateOf(false) }
 
-    AddPlayerDialog(isDialogShown, setIsShown = {isDialogShown = it}, players = players)
+    AddPlayerDialog(isDialogShown, setIsVisible = {isDialogShown = it}, players = players)
 
     Row {
         Column {

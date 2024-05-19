@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.ad6f.bowling.components.BowlingLoadingDialog
 import com.ad6f.bowling.services.sensors.SensorCalculator
 import com.ad6f.bowling.services.sensors.Coordinate
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
@@ -47,6 +47,13 @@ class GameLoop : ComponentActivity() {
 
         setContent {
             sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager;
+
+            BowlingLoadingDialog(
+                isVisible = true,
+                message = "Setting up all keels in Chromecast...",
+                imageId = R.drawable.bowling_setup,
+                imageAlt = "Setup bowling"
+            )
 
             linearSensorCal = SensorCalculator(
                 sensorManager,

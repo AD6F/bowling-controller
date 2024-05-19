@@ -10,22 +10,22 @@ import androidx.compose.runtime.Composable
 @Composable
 fun GenericDialog(
     isVisible: Boolean,
-    title: @Composable () -> Unit,
-    closeAction: () -> Unit,
-    cancelButton: @Composable () -> Unit,
-    okButton: @Composable () -> Unit,
+    title: String,
+    closeAction: (() -> Unit)? = null,
+    cancelButton: (@Composable () -> Unit)? = null,
+    okButton: (@Composable () -> Unit)? = null,
     dialogBody: @Composable () -> Unit
 ) {
     if(isVisible) {
         AlertDialog(
-            onDismissRequest = { closeAction() },
+            onDismissRequest = { closeAction?.invoke() },
             confirmButton = {
-                okButton()
+                okButton?.invoke()
             },
             dismissButton = {
-                cancelButton()
+                cancelButton?.invoke()
             },
-            title = { title() },
+            title = { Text(title) },
             text = {
                 dialogBody()
             }
