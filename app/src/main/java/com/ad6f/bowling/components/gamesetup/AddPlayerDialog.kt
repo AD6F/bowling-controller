@@ -2,7 +2,6 @@ package com.ad6f.bowling.components.gamesetup
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -14,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import com.ad6f.bowling.components.GenericDialog
 
 enum class ErrorType(val value: String) {
     NONE(""),
@@ -22,13 +22,11 @@ enum class ErrorType(val value: String) {
 }
 
 fun getPlayerError(value: String, players: List<String>): ErrorType {
-    return if (value.isEmpty()) {
-        ErrorType.EMPTY
-    } else if (players.contains(value)) {
-        ErrorType.UNIQUE
-    } else {
-        ErrorType.NONE
-    }
+    return (
+        if (value.isEmpty()) ErrorType.EMPTY
+        else if (players.contains(value)) ErrorType.UNIQUE
+        else ErrorType.NONE
+    )
 }
 
 /**
@@ -54,58 +52,50 @@ fun AddPlayerDialog(
         setIsShown(false)
     }
 
-    if (isShown) {
-        AlertDialog(
-            onDismissRequest = { close() },
-            confirmButton = {
-                Button(
-                    enabled = !isStart && errorType == ErrorType.NONE,
-                    onClick = { players.add(inputValue); close() })
-                {
-                    Text("Add")
-                }
-            },
-            dismissButton = {
-                Button(onClick = { close() }) {
-                    Text("Cancel")
-                }
-            },
-            title = { Text("Bowling") },
-            text = {
-                Column {
+    GenericDialog(
+        isVisible = isShown,
+        title = { Text("Bowling") },
+        closeAction = { close() },
+        cancelButton = {
+            Button(onClick = { close() }) {
+                Text("Cancel")
+            }
+        },
+        okButton = {
+            Button(
+                enabled = !isStart && errorType == ErrorType.NONE,
+                onClick = { players.add(inputValue); close() }
+            )
+            {
+                Text("Add")
+            }
+        }
+    ) {
+        Column {
+            OutlinedTextField(
+                label = { Text("Player") },
+                value = inputValue,
+                singleLine = true,
+                isError = errorType != ErrorType.NONE,
+                onValueChange = {
+                    if (isStart) isStart = false
 
-                    OutlinedTextField(
-                        value = inputValue,
-                        isError = errorType != ErrorType.NONE,
-                        singleLine = true,
-                        onValueChange = {
-                            if (isStart) isStart = false
+                    if (it.length <= 10) {
+                        inputValue = it;
 
-                            if (it.length <= 10) {
-                                inputValue = it;
-
-                                val tmpError = getPlayerError(inputValue, players);
-                                if (tmpError != errorType) {
-                                    errorType = tmpError
-                                }
-                            }
-                        },
-                        label = {
-                            Text("Player")
-                        }
-                    )
-
-                    if (errorType != ErrorType.NONE) {
-                        Text(
-                            text = errorType.value,
-                            color = (if (isSystemInDarkTheme()) Color(0xffcfa7b1) else Color(
-                                0xffb3261e
-                            )),
-                            fontSize = 14.sp
-                        )
+                        val tmpError = getPlayerError(inputValue, players)
+                        if (tmpError != errorType) errorType = tmpError
                     }
                 }
+            )
+
+            if (errorType != ErrorType.NONE) {
+                Text(
+                    text = errorType.value,
+                    color = (if (isSystemInDarkTheme()) Color(0xffcfa7b1) else Color(0xffb3261e)),
+                    fontSize = 14.sp
+                )
             }
-        )
+        }
     }
 }
