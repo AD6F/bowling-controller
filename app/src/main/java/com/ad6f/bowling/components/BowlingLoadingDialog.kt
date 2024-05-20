@@ -15,7 +15,7 @@ fun BowlingLoadingDialog(
 ) {
     GenericDialog(
         isVisible,
-        title = "Bowling"
+        title = {Text("Bowling")}
     ) {
         Column {
             Text(message)

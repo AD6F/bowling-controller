@@ -1,16 +1,15 @@
 package com.ad6f.bowling.components
 
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 /**
- * Dialog(Popup) to add a player for the game.
+ * Generic dialog to have a common base with all the Jetpack Compose dialog.
  */
 @Composable
 fun GenericDialog(
     isVisible: Boolean,
-    title: String,
+    title: (@Composable () -> Unit)? = null,
     closeAction: (() -> Unit)? = null,
     cancelButton: (@Composable () -> Unit)? = null,
     okButton: (@Composable () -> Unit)? = null,
@@ -25,7 +24,9 @@ fun GenericDialog(
             dismissButton = {
                 cancelButton?.invoke()
             },
-            title = { Text(title) },
+            title = {
+                title?.invoke()
+            },
             text = {
                 dialogBody()
             }

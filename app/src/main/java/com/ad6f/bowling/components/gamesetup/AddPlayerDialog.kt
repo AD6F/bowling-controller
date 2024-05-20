@@ -54,7 +54,7 @@ fun AddPlayerDialog(
 
     GenericDialog(
         isVisible,
-        title = "Bowling",
+        title = {Text("Bowling")},
         closeAction = { close() },
         cancelButton = {
             Button(onClick = { close() }) {

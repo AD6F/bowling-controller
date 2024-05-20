@@ -19,7 +19,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.ad6f.bowling.components.BowlingLoadingDialog
+import com.ad6f.bowling.components.gameloop.EndGameDialog
+import com.ad6f.bowling.components.gameloop.SetupLoadingDialog
+import com.ad6f.bowling.components.gameloop.LaunchLoadingDialog
+import com.ad6f.bowling.components.gameloop.PauseMenuDialog
 import com.ad6f.bowling.services.sensors.SensorCalculator
 import com.ad6f.bowling.services.sensors.Coordinate
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
@@ -48,12 +51,10 @@ class GameLoop : ComponentActivity() {
         setContent {
             sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager;
 
-            BowlingLoadingDialog(
-                isVisible = true,
-                message = "Setting up all keels in Chromecast...",
-                imageId = R.drawable.bowling_setup,
-                imageAlt = "Setup bowling"
-            )
+            SetupLoadingDialog(isVisible = false)
+            LaunchLoadingDialog(isVisible = false)
+            PauseMenuDialog(isVisible = false)
+            EndGameDialog(isVisible = true)
 
             linearSensorCal = SensorCalculator(
                 sensorManager,
