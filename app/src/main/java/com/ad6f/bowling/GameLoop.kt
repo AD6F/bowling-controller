@@ -10,9 +10,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
@@ -45,13 +48,17 @@ import org.json.JSONObject
 
 @Composable
 fun LaunchButton() {
-    Button(onClick = {
-        val jsonObject = JSONObject()
-        GameLoop.rotationSensorCal?.start()
-        GameLoop.gravitySensorCal?.start()
-        GameLoop.linearSensorCal?.start()
-    }) {
-        Icon(Icons.Default.Add, contentDescription = "Launch")
+    Button(
+        onClick = {
+            GameLoop.rotationSensorCal?.start()
+            GameLoop.gravitySensorCal?.start()
+            GameLoop.linearSensorCal?.start()
+        },
+        Modifier
+            .width(100.dp)
+            .height(100.dp),
+    ) {
+        Icon(Icons.Default.Add, modifier = Modifier.fillMaxSize(), contentDescription = "Launch")
     }
 }
 
@@ -59,7 +66,9 @@ fun LaunchButton() {
 @Composable
 fun GameNavbar() {
     Row(
-        Modifier.fillMaxWidth().padding(12.dp),
+        Modifier
+            .fillMaxWidth()
+            .padding(12.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -71,7 +80,15 @@ fun GameNavbar() {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun PlayerTurnMessage() {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+        Text("$currentPlayer’s turn", fontSize = 20.sp)
+    }
+}
 var isPauseMenuVisible by mutableStateOf(false);
+var currentPlayer by mutableStateOf("Davide");
 
 class GameLoop : ComponentActivity() {
     companion object {
@@ -148,6 +165,13 @@ class GameLoop : ComponentActivity() {
 
                     Column {
                         GameNavbar()
+                        PlayerTurnMessage()
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
                         LaunchButton()
                     }
                 }

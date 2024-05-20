@@ -58,8 +58,8 @@ fun PauseMenuDialog(isVisible: Boolean, resumeAction: () -> Unit, mainMenuAction
     GenericDialog(isVisible, title = {CenteredTitle("Pause Menu")}) {
         Column {
             MenuButton("Resume", resumeAction)
-            MenuButton("MainMenu", mainMenuAction)
-            MenuButton("coming soon..", {}, false)
+            MenuButton("Main Menu", mainMenuAction)
+            MenuButton("Coming Soon...", {}, false)
         }
     }
 }
