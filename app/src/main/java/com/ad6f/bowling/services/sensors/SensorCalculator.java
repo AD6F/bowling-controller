@@ -46,7 +46,7 @@ public class SensorCalculator {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if (isListening) {
-                    System.out.println("LISTENING");
+                    //System.out.println("LISTENING");
                     var currentCoordinate = ((event.values[coordinate.ordinal()] - MIN_VALUE) * 100) / (MAX_VALUE - MIN_VALUE);
 
                     if (sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION && !percentsList.isEmpty() && percentsList.get(percentsList.size() - 1) - currentCoordinate >= 10) {

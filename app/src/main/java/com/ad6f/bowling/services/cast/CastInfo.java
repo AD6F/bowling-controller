@@ -5,7 +5,7 @@ public interface CastInfo {
 
     String GAME_NAMESPACE = "urn:x-cast:game";
 
-    String ERROR_NAMESPACE = "urn:x-cast:error";
+    String DATA_NAMESPACE = "urn:x-cast:data";
 
     String APPLICATION_ID = "0E65D33E";
 

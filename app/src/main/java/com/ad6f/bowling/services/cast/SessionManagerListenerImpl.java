@@ -1,9 +1,13 @@
 package com.ad6f.bowling.services.cast;
 
 import androidx.annotation.NonNull;
+
+import com.ad6f.bowling.GameLoop;
 import com.ad6f.bowling.MainMenu;
 import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.SessionManagerListener;
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.io.IOException;
 
 public class SessionManagerListenerImpl implements SessionManagerListener<CastSession> {
@@ -55,7 +59,22 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
             });
 
             castSession.setMessageReceivedCallbacks(CastInfo.GAME_NAMESPACE, (castDevice, namespace, message) -> {
-                System.out.println("ONE CAST MESSAGE");
+                System.out.println("GAME CAST MESSAGE");
+                JSONObject jsonObject;
+
+                System.out.println("ORIGINAL : "+message);
+                try {
+                    jsonObject = new JSONObject(message);
+                    System.out.println(jsonObject);
+                    GameLoop.playerReceived(jsonObject.getString("player"));
+                } catch (JSONException e) {
+                    System.out.println("Error cannot converted.");
+                    throw new RuntimeException(e);
+                }
+            });
+
+            castSession.setMessageReceivedCallbacks(CastInfo.DATA_NAMESPACE, (castDevice, namespace, message) -> {
+                System.out.println("DATA MESSAGE: ");
                 System.out.println(message);
             });
 

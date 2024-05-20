@@ -45,6 +45,8 @@ import com.ad6f.bowling.services.sensors.Coordinate
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
 import com.google.android.gms.cast.framework.CastContext
 import org.json.JSONObject
+import java.util.Timer
+import kotlin.concurrent.schedule
 
 @Composable
 fun LaunchButton() {
@@ -53,11 +55,13 @@ fun LaunchButton() {
             GameLoop.rotationSensorCal?.start()
             GameLoop.gravitySensorCal?.start()
             GameLoop.linearSensorCal?.start()
+            isLaunchPressed = true
         },
         Modifier
             .width(100.dp)
             .height(100.dp),
-    ) {
+        enabled = !isLaunchPressed
+        ) {
         Icon(Icons.Default.Add, modifier = Modifier.fillMaxSize(), contentDescription = "Launch")
     }
 }
@@ -84,11 +88,18 @@ fun GameNavbar() {
 @Composable
 fun PlayerTurnMessage() {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-        Text("$currentPlayer’s turn", fontSize = 20.sp)
+        if(currentPlayer != null) {
+            Text("$currentPlayer’s turn", fontSize = 20.sp)
+        }
     }
 }
-var isPauseMenuVisible by mutableStateOf(false);
-var currentPlayer by mutableStateOf("Davide");
+var isPauseMenuVisible by mutableStateOf(false)
+var isSetupLoadingVisible by mutableStateOf(true)
+var isLaunchingLoadingVisible by mutableStateOf(false)
+var isEndGameVisible by mutableStateOf(false)
+var isLaunchPressed by mutableStateOf(false)
+var currentPlayer by mutableStateOf<String?>(null)
+
 
 class GameLoop : ComponentActivity() {
     companion object {
@@ -96,7 +107,30 @@ class GameLoop : ComponentActivity() {
         var linearSensorCal: SensorCalculator? = null
         var rotationSensorCal: SensorCalculator? = null
         var gravitySensorCal: SensorCalculator? = null
+
+        @JvmStatic
+        fun playerReceived(player: String) {
+            if(player.isEmpty()) {
+                println("END GAME")
+                isLaunchingLoadingVisible = false
+                isEndGameVisible = true
+            }
+
+            else {
+               if(isSetupLoadingVisible) {
+                   Timer().schedule(1000) {
+                        isSetupLoadingVisible = false
+                        println("TASKING")
+                   }
+               }
+
+               if(isLaunchingLoadingVisible) isLaunchingLoadingVisible = false
+               currentPlayer = player
+               isLaunchPressed = false
+            }
+        }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -117,6 +151,7 @@ class GameLoop : ComponentActivity() {
                 sensorManager?.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
                 Coordinate.Y
             ) {
+                isLaunchingLoadingVisible = true
                 val castSession = CastContext.getSharedInstance(context).sessionManager.currentCastSession!!
                 val jsonObject = JSONObject()
 
@@ -151,17 +186,42 @@ class GameLoop : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SetupLoadingDialog(isVisible = false)
-                    LaunchLoadingDialog(isVisible = false)
+                    SetupLoadingDialog(isSetupLoadingVisible)
+                    LaunchLoadingDialog(isLaunchingLoadingVisible)
                     PauseMenuDialog(
                         isVisible = isPauseMenuVisible,
                         resumeAction = {isPauseMenuVisible = false},
                         mainMenuAction = {
                             startActivity(Intent(this, MainMenu::class.java))
+                            val castSession = CastContext.getSharedInstance(context).sessionManager.currentCastSession
+                            val action = JSONObject()
+                            action.put("endGameAction", 1)
+                            castSession?.sendMessage(CastInfo.GAME_NAMESPACE, action.toString())
                             isPauseMenuVisible = false
                         }
                     )
-                    EndGameDialog(isVisible = false)
+
+                    EndGameDialog(
+                        isEndGameVisible,
+                        replayAction = {
+                            isEndGameVisible = false
+                            isSetupLoadingVisible = true
+                            currentPlayer = null
+                            val action = JSONObject()
+                            val castSession = CastContext.getSharedInstance(context).sessionManager.currentCastSession
+                            action.put("endGameAction", 0)
+                            castSession?.sendMessage(CastInfo.GAME_NAMESPACE, action.toString())
+                        },
+                        mainMenuAction = {
+                            startActivity(Intent(this, MainMenu::class.java))
+                            isEndGameVisible = false
+                            currentPlayer = null
+                            val castSession = CastContext.getSharedInstance(context).sessionManager.currentCastSession
+                            val action = JSONObject()
+                            action.put("endGameAction", 1)
+                            castSession?.sendMessage(CastInfo.GAME_NAMESPACE, action.toString())
+                        }
+                    )
 
                     Column {
                         GameNavbar()

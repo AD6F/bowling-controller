@@ -47,7 +47,7 @@ fun SetupLoadingDialog(isVisible: Boolean) {
 fun LaunchLoadingDialog(isVisible: Boolean) {
     BowlingLoadingDialog(
         isVisible,
-        message = "Mission Started! Purpose : no keels left.",
+        message = "Waiting for the ball to come back because Mario stole it!",
         imageId = R.drawable.mario_launch,
         imageAlt = "Mario launching bowling ball"
     )
@@ -65,7 +65,7 @@ fun PauseMenuDialog(isVisible: Boolean, resumeAction: () -> Unit, mainMenuAction
 }
 
 @Composable
-fun EndGameDialog(isVisible: Boolean) {
+fun EndGameDialog(isVisible: Boolean, replayAction: () -> Unit, mainMenuAction: () -> Unit) {
     GenericDialog(
         isVisible,
         title = {
@@ -73,8 +73,8 @@ fun EndGameDialog(isVisible: Boolean) {
         }
     ) {
         Column {
-            MenuButton("Replay", {})
-            MenuButton("MainMenu", {})
+            MenuButton("Replay", replayAction)
+            MenuButton("Main Menu", mainMenuAction)
         }
     }
 }
