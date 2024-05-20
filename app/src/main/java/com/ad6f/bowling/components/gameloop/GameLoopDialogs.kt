@@ -4,16 +4,35 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ad6f.bowling.R
 import com.ad6f.bowling.components.BowlingLoadingDialog
 import com.ad6f.bowling.components.GenericDialog
 
+/**
+ * Small reused Component Section
+ */
+@Composable
+fun MenuButton(label: String, onClick: () -> Unit, enabled: Boolean = true) {
+    Button(onClick, modifier = Modifier.fillMaxWidth(), enabled) {
+        Text(label)
+    }
+}
+
+@Composable
+fun CenteredTitle(title: String) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+        Text(title)
+    }
+}
+
+
+/**
+ * Dialog Section
+ */
 @Composable
 fun SetupLoadingDialog(isVisible: Boolean) {
     BowlingLoadingDialog(
@@ -35,18 +54,11 @@ fun LaunchLoadingDialog(isVisible: Boolean) {
 }
 
 @Composable
-fun MenuButton(label: String, onClick: () -> Unit, enabled: Boolean = true) {
-    Button(onClick, modifier = Modifier.fillMaxWidth(), enabled) {
-        Text(label)
-    }
-}
-
-@Composable
-fun PauseMenuDialog(isVisible: Boolean) {
-    GenericDialog(isVisible) {
+fun PauseMenuDialog(isVisible: Boolean, resumeAction: () -> Unit, mainMenuAction: () -> Unit) {
+    GenericDialog(isVisible, title = {CenteredTitle("Pause Menu")}) {
         Column {
-            MenuButton("Resume", {})
-            MenuButton("MainMenu", {})
+            MenuButton("Resume", resumeAction)
+            MenuButton("MainMenu", mainMenuAction)
             MenuButton("coming soon..", {}, false)
         }
     }
@@ -57,9 +69,7 @@ fun EndGameDialog(isVisible: Boolean) {
     GenericDialog(
         isVisible,
         title = {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text("End Game")
-            }
+            CenteredTitle("End Game")
         }
     ) {
         Column {

@@ -1,15 +1,13 @@
 package com.ad6f.bowling.services.cast;
 
 import androidx.annotation.NonNull;
-
 import com.ad6f.bowling.MainMenu;
 import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.SessionManagerListener;
-
 import java.io.IOException;
 
 public class SessionManagerListenerImpl implements SessionManagerListener<CastSession> {
-    private MainMenu mainActivity;
+    private MainMenu mainActivity = null;
 
     @Override
     public void onSessionEnded(@NonNull CastSession castSession, int i) {
@@ -31,7 +29,6 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
 
     @Override
     public void onSessionResumed(@NonNull CastSession castSession, boolean b) {
-
         mainActivity.setAreButtonVisible(true);
         mainActivity.popupLoadingCast(false);
     }
@@ -52,8 +49,13 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
     @Override
     public void onSessionStarted(@NonNull CastSession castSession, @NonNull String s) {
         try {
-
             castSession.setMessageReceivedCallbacks(CastInfo.SETTING_NAMESPACE, (castDevice, namespace, message) -> {
+                System.out.println("ONE CAST MESSAGE");
+                System.out.println(message);
+            });
+
+            castSession.setMessageReceivedCallbacks(CastInfo.GAME_NAMESPACE, (castDevice, namespace, message) -> {
+                System.out.println("ONE CAST MESSAGE");
                 System.out.println(message);
             });
 
