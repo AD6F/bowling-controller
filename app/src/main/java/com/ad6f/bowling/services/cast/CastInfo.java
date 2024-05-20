@@ -5,7 +5,8 @@ public interface CastInfo {
 
     String GAME_NAMESPACE = "urn:x-cast:game";
 
-    // Chrome cast du prof : 3DDC41A0
-    // 0E65D33E"
+    String ERROR_NAMESPACE = "urn:x-cast:error";
+
     String APPLICATION_ID = "0E65D33E";
+
 }
