@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.ad6f.bowling.services.cast.CastInfo
 import com.ad6f.bowling.components.gamesetup.AddPlayerDialog
 import com.ad6f.bowling.components.Navbar
+import com.ad6f.bowling.services.cast.SessionManagerListenerImpl
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
 import com.google.android.gms.cast.framework.CastContext
 import org.json.JSONArray
@@ -47,6 +48,10 @@ import kotlin.math.round
 class GameSetup : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        SessionManagerListenerImpl.currentActivity = this.localClassName
+        SessionManagerListenerImpl.gameSetup = this
+
         setContent {
             MyApplicationTheme {
                 val context = LocalContext.current;
@@ -70,6 +75,7 @@ class GameSetup : ComponentActivity() {
                                 jsonObject.put("map", mapOptions.indexOf(mapOptionValue))
                                 castSession?.sendMessage(CastInfo.SETTING_NAMESPACE, jsonObject.toString())
                                 context.startActivity(Intent(context, GameLoop::class.java))
+                                finish()
                             }
                         )
 

@@ -1,8 +1,12 @@
 package com.ad6f.bowling.services.cast;
 
+import android.app.Activity;
+import android.content.Intent;
+
 import androidx.annotation.NonNull;
 
 import com.ad6f.bowling.GameLoop;
+import com.ad6f.bowling.GameSetup;
 import com.ad6f.bowling.MainMenu;
 import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.SessionManagerListener;
@@ -11,7 +15,15 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class SessionManagerListenerImpl implements SessionManagerListener<CastSession> {
-    private MainMenu mainActivity = null;
+    private static SessionManagerListenerImpl sessionManagerListener = new SessionManagerListenerImpl();
+
+    public static MainMenu mainActivity;
+
+    public static GameLoop gameLoop;
+
+    public static GameSetup gameSetup;
+
+    public static String currentActivity;
 
     @Override
     public void onSessionEnded(@NonNull CastSession castSession, int i) {
@@ -53,9 +65,27 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
     @Override
     public void onSessionStarted(@NonNull CastSession castSession, @NonNull String s) {
         try {
+            System.out.println(currentActivity);
+            mainActivity.setAreButtonVisible(true);
+            mainActivity.popupLoadingCast(false);
+
             castSession.setMessageReceivedCallbacks(CastInfo.SETTING_NAMESPACE, (castDevice, namespace, message) -> {
-                System.out.println("ONE CAST MESSAGE");
                 System.out.println(message);
+                try {
+                    String action = new JSONObject(message).getString("action");
+
+                    if(action.equals("end")) {
+                        if(gameLoop != null && currentActivity.equals(gameLoop.getLocalClassName())) {
+                            gameLoop.finish();
+                        }
+
+                        else if(gameSetup != null && currentActivity.equals(gameSetup.getLocalClassName())) {
+                            gameSetup.finish();
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             });
 
             castSession.setMessageReceivedCallbacks(CastInfo.GAME_NAMESPACE, (castDevice, namespace, message) -> {
@@ -77,9 +107,6 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
                 System.out.println("DATA MESSAGE: ");
                 System.out.println(message);
             });
-
-            mainActivity.setAreButtonVisible(true);
-            mainActivity.popupLoadingCast(false);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -95,7 +122,10 @@ public class SessionManagerListenerImpl implements SessionManagerListener<CastSe
 
     }
 
-    public SessionManagerListenerImpl(MainMenu mainActivity) {
-        this.mainActivity = mainActivity;
+    private SessionManagerListenerImpl() {
+    }
+
+    public static SessionManagerListenerImpl getInstance() {
+        return sessionManagerListener;
     }
 }

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-
 import com.ad6f.bowling.components.mainmenu.ErrorCastDialog;
 import com.ad6f.bowling.components.mainmenu.LoadingCastDialog;
 import com.ad6f.bowling.services.cast.SessionManagerListenerImpl;
@@ -19,6 +18,7 @@ public class MainMenu extends AppCompatActivity {
     public static boolean isCastLoading = false;
 
     private ErrorCastDialog errorCastDialog = null;
+
     public static boolean isErrorDialog = false;
 
     public void refreshButton() {
@@ -50,7 +50,9 @@ public class MainMenu extends AppCompatActivity {
         CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), findViewById(R.id.cast_media));
         var castContext = CastContext.getSharedInstance(getApplicationContext());
         var sessionManager = castContext.getSessionManager();
-        var sessionManagerListener = new SessionManagerListenerImpl(this);
+        var sessionManagerListener = SessionManagerListenerImpl.getInstance();
+
+        SessionManagerListenerImpl.mainActivity = this;
         sessionManager.addSessionManagerListener(sessionManagerListener, CastSession.class);
     }
 

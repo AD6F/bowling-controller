@@ -40,6 +40,7 @@ import com.ad6f.bowling.components.gameloop.SetupLoadingDialog
 import com.ad6f.bowling.components.gameloop.LaunchLoadingDialog
 import com.ad6f.bowling.components.gameloop.PauseMenuDialog
 import com.ad6f.bowling.services.cast.CastInfo
+import com.ad6f.bowling.services.cast.SessionManagerListenerImpl
 import com.ad6f.bowling.services.sensors.SensorCalculator
 import com.ad6f.bowling.services.sensors.Coordinate
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
@@ -131,7 +132,6 @@ class GameLoop : ComponentActivity() {
         }
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         sensorManager?.unregisterListener(rotationSensorCal?.sensorEventListener)
@@ -141,6 +141,9 @@ class GameLoop : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        SessionManagerListenerImpl.currentActivity = this.localClassName
+        SessionManagerListenerImpl.gameLoop = this
 
         setContent {
             val context = LocalContext.current
