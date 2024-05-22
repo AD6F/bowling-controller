@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun GameNavbar(onClick: () -> Unit) {
+fun GameNavbar(canOpenMenu: Boolean, onClick: () -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -27,7 +27,7 @@ fun GameNavbar(onClick: () -> Unit) {
     ) {
         Text("Bowling Game", fontSize = 25.sp)
 
-        IconButton(onClick) {
+        IconButton(onClick, enabled = canOpenMenu) {
             Icon(Icons.Default.Menu, contentDescription = "Pause", modifier = Modifier.fillMaxSize())
         }
     }

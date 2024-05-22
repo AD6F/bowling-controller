@@ -140,7 +140,9 @@ class GameLoop : ComponentActivity() {
                     )
 
                     Column {
-                        GameNavbar {
+                        GameNavbar(
+                            canOpenMenu = !isLaunchPressed
+                        ) {
                             isPauseMenuVisible = true
                         }
                         PlayerTurnMessage(currentPlayer)
