@@ -1,14 +1,9 @@
 package com.ad6f.bowling.services.cast;
 
-import android.app.Activity;
-import android.content.Intent;
-
 import androidx.annotation.NonNull;
-
 import com.ad6f.bowling.GameLoop;
 import com.ad6f.bowling.GameSetup;
 import com.ad6f.bowling.MainMenu;
-import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.SessionManagerListener;
 import org.json.JSONException;

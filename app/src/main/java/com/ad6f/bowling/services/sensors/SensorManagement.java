@@ -3,6 +3,8 @@ package com.ad6f.bowling.services.sensors;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 
+import java.util.Objects;
+
 public class SensorManagement {
     private boolean isRegister = false;
 
@@ -60,22 +62,19 @@ public class SensorManagement {
         this.sensorManager = sensorManager;
         
         this.linearCalculator = new SensorCalculator(
-            sensorManager, 
-            Sensor.TYPE_LINEAR_ACCELERATION,
+            Objects.requireNonNull(sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)),
             Coordinate.Y,
             sendData
         );
 
         this.rotationCalculator = new SensorCalculator(
-            sensorManager,
-            Sensor.TYPE_ROTATION_VECTOR,
+            Objects.requireNonNull(sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)),
             Coordinate.Y,
             null
         );
 
         this.gravityCalculator = new SensorCalculator(
-            sensorManager,
-            Sensor.TYPE_ROTATION_VECTOR,
+            Objects.requireNonNull(sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)),
             Coordinate.X,
             null
         );
