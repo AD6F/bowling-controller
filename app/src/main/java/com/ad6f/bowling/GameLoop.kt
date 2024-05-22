@@ -46,6 +46,7 @@ import com.ad6f.bowling.services.sensors.SensorCalculator
 import com.ad6f.bowling.services.sensors.Coordinate
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
 import com.google.android.gms.cast.framework.CastContext
+import com.google.android.gms.cast.framework.CastSession
 import org.json.JSONObject
 import java.util.Timer
 import kotlin.concurrent.schedule
@@ -102,6 +103,9 @@ var isEndGameVisible by mutableStateOf(false)
 var isLaunchPressed by mutableStateOf(false)
 var currentPlayer by mutableStateOf<String?>(null)
 
+fun sendEndGameAction(castSession: CastSession?, action: Int) {
+    castSession?.sendMessage(CastInfo.GAME_NAMESPACE, "{\"endGameAction\" : $action}")
+}
 
 class GameLoop : ComponentActivity() {
     companion object {
@@ -197,6 +201,12 @@ class GameLoop : ComponentActivity() {
                 null
             )
 
+            fun goToMainMenu() {
+                startActivity(Intent(this, MainMenu::class.java))
+                sendEndGameAction(CastContext.getSharedInstance(context).sessionManager.currentCastSession, 1)
+                finish()
+            }
+
             MyApplicationTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -208,36 +218,16 @@ class GameLoop : ComponentActivity() {
                     PauseMenuDialog(
                         isVisible = isPauseMenuVisible,
                         resumeAction = {isPauseMenuVisible = false},
-                        mainMenuAction = {
-                            startActivity(Intent(this, MainMenu::class.java))
-                            val castSession = CastContext.getSharedInstance(context).sessionManager.currentCastSession
-                            val action = JSONObject()
-                            action.put("endGameAction", 1)
-                            castSession?.sendMessage(CastInfo.GAME_NAMESPACE, action.toString())
-                            isPauseMenuVisible = false
-                        }
+                        mainMenuAction = {goToMainMenu()}
                     )
 
                     EndGameDialog(
                         isEndGameVisible,
                         replayAction = {
-                            isEndGameVisible = false
-                            isSetupLoadingVisible = true
-                            currentPlayer = null
-                            val action = JSONObject()
-                            val castSession = CastContext.getSharedInstance(context).sessionManager.currentCastSession
-                            action.put("endGameAction", 0)
-                            castSession?.sendMessage(CastInfo.GAME_NAMESPACE, action.toString())
+                            reset()
+                            sendEndGameAction(CastContext.getSharedInstance(context).sessionManager.currentCastSession, 0)
                         },
-                        mainMenuAction = {
-                            startActivity(Intent(this, MainMenu::class.java))
-                            isEndGameVisible = false
-                            currentPlayer = null
-                            val castSession = CastContext.getSharedInstance(context).sessionManager.currentCastSession
-                            val action = JSONObject()
-                            action.put("endGameAction", 1)
-                            castSession?.sendMessage(CastInfo.GAME_NAMESPACE, action.toString())
-                        }
+                        mainMenuAction = {goToMainMenu()}
                     )
 
                     Column {
