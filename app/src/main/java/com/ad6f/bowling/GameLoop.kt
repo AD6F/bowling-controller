@@ -156,9 +156,7 @@ class GameLoop : ComponentActivity() {
                 isLaunchingLoadingVisible = true
                 val castSession = CastContext.getSharedInstance(context).sessionManager.currentCastSession!!
 
-                val json = "{\"rotation\":${sensorManagement?.rotation}, \"force\":${sensorManagement?.force}, \"tilt\":${sensorManagement?.tilt}}"
-                castSession.sendMessage(CastInfo.GAME_NAMESPACE, json)
-
+                castSession.sendMessage(CastInfo.GAME_NAMESPACE, sensorManagement!!.getJsonData())
                 sensorManagement?.close()
             }
 

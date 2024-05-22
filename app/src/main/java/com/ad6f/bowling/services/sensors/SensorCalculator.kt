@@ -9,7 +9,7 @@ import java.util.Collections
 class SensorCalculator(
     private val sensor: Sensor,
     private val coordinate: Coordinate,
-    private val sensorAction: SensorAction? = null
+    private val sendData : (() -> Unit)? = null
 ) : SensorEventListener {
     private var percentsList: MutableList<Float> = ArrayList()
     private var isListening = false
@@ -50,8 +50,8 @@ class SensorCalculator(
         if (isListening) {
             val currentPercent = ((event.values[coordinate.ordinal] - min) * 100) / (max - min)
 
-            if (sensor.type == Sensor.TYPE_LINEAR_ACCELERATION && percentsList.isNotEmpty() && getLastPercent() - currentPercent >= 10) {
-                sensorAction?.sendData()
+            if (sensor.type == Sensor.TYPE_LINEAR_ACCELERATION && percentsList.isNotEmpty() && (getLastPercent() - currentPercent >= 10)) {
+                sendData?.invoke()
             }
 
             percentsList.add(currentPercent)
