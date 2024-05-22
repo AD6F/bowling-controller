@@ -7,6 +7,7 @@ public interface CastInfo {
 
     String DATA_NAMESPACE = "urn:x-cast:data";
 
-    String APPLICATION_ID = "0E65D33E";
+    String NAVIGATION_NAMESPACE = "urn:x-cast:navigation";
 
+    String APPLICATION_ID = "0E65D33E";
 }

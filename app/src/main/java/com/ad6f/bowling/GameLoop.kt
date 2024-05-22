@@ -2,7 +2,6 @@ package com.ad6f.bowling
 
 import android.content.Context
 import android.content.Intent
-import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -28,7 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,14 +39,12 @@ import com.ad6f.bowling.components.gameloop.SetupLoadingDialog
 import com.ad6f.bowling.components.gameloop.LaunchLoadingDialog
 import com.ad6f.bowling.components.gameloop.PauseMenuDialog
 import com.ad6f.bowling.services.cast.CastInfo
+import com.ad6f.bowling.services.cast.CastPage
 import com.ad6f.bowling.services.cast.SessionManagerListenerImpl
-import com.ad6f.bowling.services.sensors.SensorCalculator
-import com.ad6f.bowling.services.sensors.Coordinate
 import com.ad6f.bowling.services.sensors.SensorManagement
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.cast.framework.CastSession
-import org.json.JSONObject
 import java.util.Timer
 import kotlin.concurrent.schedule
 
@@ -102,8 +98,8 @@ var isEndGameVisible by mutableStateOf(false)
 var isLaunchPressed by mutableStateOf(false)
 var currentPlayer by mutableStateOf<String?>(null)
 
-fun sendEndGameAction(castSession: CastSession?, action: Int) {
-    castSession?.sendMessage(CastInfo.GAME_NAMESPACE, "{\"endGameAction\" : $action}")
+fun navigate(castSession: CastSession?, page: CastPage) {
+    castSession?.sendMessage(CastInfo.NAVIGATION_NAMESPACE, "{\"page\" : ${page.ordinal}}")
 }
 
 class GameLoop : ComponentActivity() {
@@ -146,11 +142,6 @@ class GameLoop : ComponentActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //sensorManagement?.unregisterListeners()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -173,7 +164,7 @@ class GameLoop : ComponentActivity() {
 
             fun goToMainMenu() {
                 startActivity(Intent(this, MainMenu::class.java))
-                sendEndGameAction(CastContext.getSharedInstance(context).sessionManager.currentCastSession, 1)
+                navigate(CastContext.getSharedInstance(context).sessionManager.currentCastSession, CastPage.MAIN_MENU)
                 finish()
             }
 
@@ -195,7 +186,7 @@ class GameLoop : ComponentActivity() {
                         isEndGameVisible,
                         replayAction = {
                             reset()
-                            sendEndGameAction(CastContext.getSharedInstance(context).sessionManager.currentCastSession, 0)
+                            navigate(CastContext.getSharedInstance(context).sessionManager.currentCastSession, CastPage.GAME_LOOP)
                         },
                         mainMenuAction = {goToMainMenu()}
                     )

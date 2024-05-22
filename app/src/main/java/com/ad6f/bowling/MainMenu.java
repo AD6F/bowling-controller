@@ -53,6 +53,7 @@ public class MainMenu extends AppCompatActivity {
         var sessionManagerListener = SessionManagerListenerImpl.getInstance();
 
         SessionManagerListenerImpl.mainActivity = this;
+        SessionManagerListenerImpl.currentActivity = this.getLocalClassName();
         sessionManager.addSessionManagerListener(sessionManagerListener, CastSession.class);
     }
 
