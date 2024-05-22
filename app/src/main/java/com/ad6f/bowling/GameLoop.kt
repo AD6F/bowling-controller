@@ -44,6 +44,7 @@ import com.ad6f.bowling.services.cast.CastInfo
 import com.ad6f.bowling.services.cast.SessionManagerListenerImpl
 import com.ad6f.bowling.services.sensors.SensorCalculator
 import com.ad6f.bowling.services.sensors.Coordinate
+import com.ad6f.bowling.services.sensors.SensorManagement
 import com.ad6f.bowling.ui.theme.MyApplicationTheme
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.cast.framework.CastSession
@@ -55,9 +56,7 @@ import kotlin.concurrent.schedule
 fun LaunchButton() {
     Button(
         onClick = {
-            GameLoop.rotationSensorCal?.start()
-            GameLoop.gravitySensorCal?.start()
-            GameLoop.linearSensorCal?.start()
+            GameLoop.sensorManagement?.start()
             isLaunchPressed = true
         },
         Modifier
@@ -109,10 +108,7 @@ fun sendEndGameAction(castSession: CastSession?, action: Int) {
 
 class GameLoop : ComponentActivity() {
     companion object {
-        var sensorManager: SensorManager? = null
-        var linearSensorCal: SensorCalculator? = null
-        var rotationSensorCal: SensorCalculator? = null
-        var gravitySensorCal: SensorCalculator? = null
+        var sensorManagement: SensorManagement? = null
 
         @JvmStatic
         fun playerReceived(player: String) {
@@ -152,9 +148,7 @@ class GameLoop : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        sensorManager?.unregisterListener(rotationSensorCal?.sensorEventListener)
-        sensorManager?.unregisterListener(gravitySensorCal?.sensorEventListener)
-        sensorManager?.unregisterListener(linearSensorCal?.sensorEventListener)
+        //sensorManagement?.unregisterListeners()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -165,41 +159,17 @@ class GameLoop : ComponentActivity() {
 
         setContent {
             val context = LocalContext.current
-            sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager;
-
-            linearSensorCal = SensorCalculator(
-                sensorManager,
-                sensorManager?.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
-                Coordinate.Y
+            sensorManagement = SensorManagement(
+                getSystemService(Context.SENSOR_SERVICE) as SensorManager
             ) {
                 isLaunchingLoadingVisible = true
                 val castSession = CastContext.getSharedInstance(context).sessionManager.currentCastSession!!
-                val jsonObject = JSONObject()
 
-                jsonObject.put("rotation", linearSensorCal?.bestPercent)
-                jsonObject.put("force", rotationSensorCal?.bestPercent)
-                jsonObject.put("tilt", gravitySensorCal?.lastPercent)
+                val json = "{\"rotation\":${sensorManagement?.rotation}, \"force\":${sensorManagement?.force}, \"tilt\":${sensorManagement?.tilt}}"
+                castSession.sendMessage(CastInfo.GAME_NAMESPACE, json)
 
-                println(jsonObject.toString())
-                castSession.sendMessage(CastInfo.GAME_NAMESPACE, jsonObject.toString())
-                rotationSensorCal?.close()
-                gravitySensorCal?.close()
-                linearSensorCal?.close()
+                sensorManagement?.close()
             }
-
-            rotationSensorCal = SensorCalculator(
-                sensorManager,
-                sensorManager?.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
-                Coordinate.Y,
-                null
-            )
-
-            gravitySensorCal = SensorCalculator(
-                sensorManager,
-                sensorManager?.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
-                Coordinate.X,
-                null
-            )
 
             fun goToMainMenu() {
                 startActivity(Intent(this, MainMenu::class.java))
