@@ -12,32 +12,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.ad6f.bowling.components.gameloop.EndGameDialog
-import com.ad6f.bowling.components.gameloop.SetupLoadingDialog
+import com.ad6f.bowling.components.gameloop.GameNavbar
+import com.ad6f.bowling.components.gameloop.LaunchButton
 import com.ad6f.bowling.components.gameloop.LaunchLoadingDialog
 import com.ad6f.bowling.components.gameloop.PauseMenuDialog
+import com.ad6f.bowling.components.gameloop.PlayerTurnMessage
+import com.ad6f.bowling.components.gameloop.SetupLoadingDialog
 import com.ad6f.bowling.services.cast.CastInfo
 import com.ad6f.bowling.services.cast.CastPage
 import com.ad6f.bowling.services.cast.SessionManagerListenerImpl
@@ -48,49 +37,6 @@ import com.google.android.gms.cast.framework.CastSession
 import java.util.Timer
 import kotlin.concurrent.schedule
 
-@Composable
-fun LaunchButton() {
-    Button(
-        onClick = {
-            GameLoop.sensorManagement?.start()
-            isLaunchPressed = true
-        },
-        Modifier
-            .width(100.dp)
-            .height(100.dp),
-        enabled = !isLaunchPressed
-        ) {
-        Icon(Icons.Default.Add, modifier = Modifier.fillMaxSize(), contentDescription = "Launch")
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GameNavbar() {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text("Bowling Game", fontSize = 25.sp)
-
-        IconButton(onClick = { isPauseMenuVisible = true }) {
-            Icon(Icons.Default.Menu, contentDescription = "Pause", modifier = Modifier.fillMaxSize())
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PlayerTurnMessage() {
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-        if(currentPlayer != null) {
-            Text("$currentPlayer’s turn", fontSize = 20.sp)
-        }
-    }
-}
 var isPauseMenuVisible by mutableStateOf(false)
 var isSetupLoadingVisible by mutableStateOf(true)
 var isLaunchingLoadingVisible by mutableStateOf(false)
@@ -108,23 +54,20 @@ class GameLoop : ComponentActivity() {
 
         @JvmStatic
         fun playerReceived(player: String) {
-            if(player.isEmpty()) {
-                println("END GAME")
+            if (player.isEmpty()) {
                 isLaunchingLoadingVisible = false
                 isEndGameVisible = true
-            }
-
-            else {
-               if(isSetupLoadingVisible) {
-                   Timer().schedule(1000) {
+            } else {
+                if (isSetupLoadingVisible) {
+                    Timer().schedule(1000) {
                         isSetupLoadingVisible = false
                         println("TASKING")
-                   }
-               }
+                    }
+                }
 
-               if(isLaunchingLoadingVisible) isLaunchingLoadingVisible = false
-               currentPlayer = player
-               isLaunchPressed = false
+                if (isLaunchingLoadingVisible) isLaunchingLoadingVisible = false
+                currentPlayer = player
+                isLaunchPressed = false
             }
         }
 
@@ -154,7 +97,8 @@ class GameLoop : ComponentActivity() {
                 getSystemService(Context.SENSOR_SERVICE) as SensorManager
             ) {
                 isLaunchingLoadingVisible = true
-                val castSession = CastContext.getSharedInstance(context).sessionManager.currentCastSession!!
+                val castSession =
+                    CastContext.getSharedInstance(context).sessionManager.currentCastSession!!
 
                 castSession.sendMessage(CastInfo.GAME_NAMESPACE, sensorManagement!!.getJsonData())
                 sensorManagement?.close()
@@ -162,7 +106,10 @@ class GameLoop : ComponentActivity() {
 
             fun goToMainMenu() {
                 startActivity(Intent(this, MainMenu::class.java))
-                navigate(CastContext.getSharedInstance(context).sessionManager.currentCastSession, CastPage.MAIN_MENU)
+                navigate(
+                    CastContext.getSharedInstance(context).sessionManager.currentCastSession,
+                    CastPage.MAIN_MENU
+                )
                 finish()
             }
 
@@ -176,29 +123,43 @@ class GameLoop : ComponentActivity() {
                     LaunchLoadingDialog(isLaunchingLoadingVisible)
                     PauseMenuDialog(
                         isVisible = isPauseMenuVisible,
-                        resumeAction = {isPauseMenuVisible = false},
-                        mainMenuAction = {goToMainMenu()}
+                        resumeAction = { isPauseMenuVisible = false },
+                        mainMenuAction = { goToMainMenu() }
                     )
 
                     EndGameDialog(
                         isEndGameVisible,
                         replayAction = {
                             reset()
-                            navigate(CastContext.getSharedInstance(context).sessionManager.currentCastSession, CastPage.GAME_LOOP)
+                            navigate(
+                                CastContext.getSharedInstance(context).sessionManager.currentCastSession,
+                                CastPage.GAME_LOOP
+                            )
                         },
-                        mainMenuAction = {goToMainMenu()}
+                        mainMenuAction = { goToMainMenu() }
                     )
 
                     Column {
-                        GameNavbar()
-                        PlayerTurnMessage()
+                        GameNavbar {
+                            isPauseMenuVisible = true
+                        }
+                        PlayerTurnMessage(currentPlayer)
                     }
 
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .fillMaxHeight(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
-                        LaunchButton()
+                            .fillMaxHeight(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+
+                        LaunchButton(
+                            enabled = !isLaunchPressed
+                        ) {
+                            sensorManagement?.start()
+                            isLaunchPressed = true
+                        }
                     }
                 }
             }

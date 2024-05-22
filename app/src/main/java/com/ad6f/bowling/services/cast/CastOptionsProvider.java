@@ -1,14 +1,11 @@
 package com.ad6f.bowling.services.cast;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.android.gms.cast.framework.CastOptions;
 import com.google.android.gms.cast.framework.OptionsProvider;
 import com.google.android.gms.cast.framework.SessionProvider;
-
 import java.util.List;
 
 public class CastOptionsProvider implements OptionsProvider {

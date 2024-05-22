@@ -15,6 +15,7 @@ public class MainMenu extends AppCompatActivity {
     public static boolean areButtonVisible = false;
 
     private LoadingCastDialog loadingCastDialog = null;
+
     public static boolean isCastLoading = false;
 
     private ErrorCastDialog errorCastDialog = null;

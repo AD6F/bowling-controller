@@ -9,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.ad6f.bowling.R
-import com.ad6f.bowling.components.BowlingLoadingDialog
 import com.ad6f.bowling.components.GenericDialog
 
 /**
