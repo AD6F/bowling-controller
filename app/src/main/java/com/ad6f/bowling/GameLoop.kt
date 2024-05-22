@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -129,6 +130,19 @@ class GameLoop : ComponentActivity() {
                currentPlayer = player
                isLaunchPressed = false
             }
+        }
+
+        /**
+         * Function to reset all the state value that the user give to default.
+         */
+        @JvmStatic
+        fun reset() {
+            isPauseMenuVisible = false
+            isSetupLoadingVisible = true
+            isLaunchingLoadingVisible = false
+            isEndGameVisible = false
+            isLaunchPressed = false
+            currentPlayer = null
         }
     }
 

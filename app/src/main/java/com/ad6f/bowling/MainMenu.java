@@ -61,6 +61,7 @@ public class MainMenu extends AppCompatActivity {
     }
 
     public void play(View view) {
+        GameSetup.reset();
         this.startActivity(new Intent(this, GameSetup.class));
     }
 

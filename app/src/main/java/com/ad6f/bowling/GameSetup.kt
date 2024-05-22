@@ -46,6 +46,18 @@ import org.json.JSONObject
 import kotlin.math.round
 
 class GameSetup : ComponentActivity() {
+    companion object {
+        /**
+         * Function to reset all the state value that the user give to default.
+         */
+        @JvmStatic
+        fun reset() {
+            players.clear()
+            roundOptionValue = 4f
+            mapOptionValue = mapOptions[0]
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -61,7 +73,6 @@ class GameSetup : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
-
                         Navbar(
                             backSending = { startActivity(Intent(context, MainMenu::class.java)) },
                             pageTitle = "Bowling Setup",
@@ -74,6 +85,7 @@ class GameSetup : ComponentActivity() {
                                 jsonObject.put("round", round(roundOptionValue))
                                 jsonObject.put("map", mapOptions.indexOf(mapOptionValue))
                                 castSession?.sendMessage(CastInfo.SETTING_NAMESPACE, jsonObject.toString())
+                                GameLoop.reset()
                                 context.startActivity(Intent(context, GameLoop::class.java))
                                 finish()
                             }
