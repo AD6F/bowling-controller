@@ -8,13 +8,13 @@
     app:justifyContent="center"
     app:alignItems="center"
     tools:context=".MainMenu">
-
     <androidx.mediarouter.app.MediaRouteButton
         android:id="@+id/cast_media"
         android:layout_width="100sp"
         android:layout_height="50sp"
         android:text="@string/choose"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        />
 
     <TextView
         android:id="@+id/main_menu"

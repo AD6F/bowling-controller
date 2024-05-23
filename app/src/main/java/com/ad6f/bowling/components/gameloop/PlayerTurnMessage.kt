@@ -10,9 +10,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun PlayerTurnMessage(player: String?) {
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-        if(player != null) {
-            Text("${player}’s turn", fontSize = 20.sp)
-        }
+    if(player != null) {
+        Text("${player}’s turn", fontSize = 20.sp)
     }
 }

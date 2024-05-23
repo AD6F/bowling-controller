@@ -14,6 +14,8 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import com.ad6f.bowling.components.GenericDialog
+import com.ad6f.bowling.ui.theme.DarkColorScheme
+import com.ad6f.bowling.ui.theme.LightColorScheme
 
 enum class ErrorType(val value: String) {
     NONE(""),
@@ -92,7 +94,7 @@ fun AddPlayerDialog(
             if (errorType != ErrorType.NONE) {
                 Text(
                     text = errorType.value,
-                    color = (if (isSystemInDarkTheme()) Color(0xffcfa7b1) else Color(0xffb3261e)),
+                    color = (if (isSystemInDarkTheme()) DarkColorScheme.error else LightColorScheme.error),
                     fontSize = 14.sp
                 )
             }

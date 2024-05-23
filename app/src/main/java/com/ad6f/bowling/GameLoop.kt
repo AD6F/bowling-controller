@@ -6,6 +6,7 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.ad6f.bowling.components.gameloop.EndGameDialog
 import com.ad6f.bowling.components.gameloop.GameNavbar
 import com.ad6f.bowling.components.gameloop.LaunchButton
+import com.ad6f.bowling.components.gameloop.LaunchInstruction
 import com.ad6f.bowling.components.gameloop.LaunchLoadingDialog
 import com.ad6f.bowling.components.gameloop.PauseMenuDialog
 import com.ad6f.bowling.components.gameloop.PlayerTurnMessage
@@ -145,22 +147,20 @@ class GameLoop : ComponentActivity() {
                         ) {
                             isPauseMenuVisible = true
                         }
-                        PlayerTurnMessage(currentPlayer)
-                    }
 
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.Bottom
-                    ) {
+                        Column(
+                            Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceBetween) {
+                            PlayerTurnMessage(currentPlayer)
+                            LaunchInstruction()
 
-                        LaunchButton(
-                            enabled = !isLaunchPressed
-                        ) {
-                            sensorManagement?.start()
-                            isLaunchPressed = true
+                            LaunchButton(
+                                enabled = !isLaunchPressed
+                            ) {
+                                sensorManagement?.start()
+                                isLaunchPressed = true
+                            }
                         }
                     }
                 }
