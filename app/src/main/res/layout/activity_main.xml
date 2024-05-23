@@ -6,30 +6,36 @@
     android:layout_height="match_parent"
     app:flexDirection="column"
     app:alignItems="center"
-    app:justifyContent="center"
+    app:justifyContent="space_around"
     tools:context=".MainMenu">
 
-    <androidx.mediarouter.app.MediaRouteButton
-        android:id="@+id/cast_media"
+    <com.google.android.flexbox.FlexboxLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/choose" />
+        app:alignItems="center"
+        app:flexDirection="column">
 
-    <TextView
-        android:id="@+id/main_menu"
-        android:textSize="45sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/main_menu_title" />
+        <androidx.mediarouter.app.MediaRouteButton
+            android:id="@+id/cast_media"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose" />
 
+        <TextView
+            android:id="@+id/main_menu"
+            android:textSize="45sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_menu_title" />
 
-    <Button
-        android:id="@+id/play"
-        style="@style/MainMenuButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/play"
-        android:onClick="play" />
+        <Button
+            android:id="@+id/play"
+            style="@style/MainMenuButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/play"
+            android:onClick="play" />
+    </com.google.android.flexbox.FlexboxLayout>
 
     <TextView
         android:layout_width="wrap_content"
