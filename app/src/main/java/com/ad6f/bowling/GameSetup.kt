@@ -98,7 +98,7 @@ class GameSetup : ComponentActivity() {
         }
     }
 }
-val mapOptions = arrayListOf("Classic", "New York", "The Matrix", "Cold Sea", "Infiltration", "Galaxy", "Grimace")
+val mapOptions = arrayListOf("Classic", "New York", "The Matrix", "Cold Sea", "Infiltration", "Galaxy", "Grimace", "Deltarune")
 const val OPTION_TITLE = 20;
 
 // state to send to the chromecast
@@ -120,7 +120,7 @@ fun MapSetup() {
     var expanded by rememberSaveable { mutableStateOf(false) }
 
     Column {
-        Text(fontSize = OPTION_TITLE.sp, text = "Map")
+        Text(fontSize = OPTION_TITLE.sp, text = "Alley Theme")
 
         Button(onClick = { expanded = !expanded}) {
             Text(mapOptionValue)

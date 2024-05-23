@@ -6,10 +6,8 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -153,7 +151,7 @@ class GameLoop : ComponentActivity() {
                                 .fillMaxWidth()
                                 .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceBetween) {
                             PlayerTurnMessage(currentPlayer)
-                            LaunchInstruction()
+                            LaunchInstruction(isLaunchPressed)
 
                             LaunchButton(
                                 enabled = !isLaunchPressed

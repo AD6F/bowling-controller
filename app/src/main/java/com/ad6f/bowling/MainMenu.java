@@ -24,7 +24,7 @@ public class MainMenu extends AppCompatActivity {
 
     public void refreshButton() {
         findViewById(R.id.play).setEnabled(areButtonVisible);
-        findViewById(R.id.setting).setEnabled(areButtonVisible);
+        //findViewById(R.id.setting).setEnabled(areButtonVisible);
     }
 
     public void setAreButtonVisible(boolean areButtonVisible) {
@@ -59,7 +59,7 @@ public class MainMenu extends AppCompatActivity {
     }
 
     public void leave(View view) {
-
+        finish();
     }
 
     public void play(View view) {

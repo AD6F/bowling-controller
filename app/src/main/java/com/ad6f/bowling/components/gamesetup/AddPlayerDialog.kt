@@ -2,6 +2,7 @@ package com.ad6f.bowling.components.gamesetup
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.ad6f.bowling.components.GenericDialog
 import com.ad6f.bowling.ui.theme.DarkColorScheme
 import com.ad6f.bowling.ui.theme.LightColorScheme
+import com.ad6f.bowling.ui.theme.MyApplicationTheme
 
 enum class ErrorType(val value: String) {
     NONE(""),

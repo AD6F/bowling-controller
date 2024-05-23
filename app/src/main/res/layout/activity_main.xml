@@ -5,16 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:flexDirection="column"
-    app:justifyContent="center"
     app:alignItems="center"
+    app:justifyContent="center"
     tools:context=".MainMenu">
+
     <androidx.mediarouter.app.MediaRouteButton
         android:id="@+id/cast_media"
-        android:layout_width="100sp"
-        android:layout_height="50sp"
-        android:text="@string/choose"
-        android:textSize="25sp"
-        />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose" />
 
     <TextView
         android:id="@+id/main_menu"
@@ -22,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/main_menu_title" />
+
 
     <Button
         android:id="@+id/play"
@@ -31,19 +31,9 @@
         android:text="@string/play"
         android:onClick="play" />
 
-
-    <Button
-        android:id="@+id/setting"
-        style="@style/MainMenuButton"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/setting" />
-
-    <Button
-        android:id="@+id/leave"
-        style="@style/MainMenuButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/leave"
-        android:onClick="leave"/>
+        android:text="@string/version"
+        android:textSize="25sp" />
 </com.google.android.flexbox.FlexboxLayout>
