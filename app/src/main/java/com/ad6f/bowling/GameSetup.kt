@@ -98,7 +98,7 @@ class GameSetup : ComponentActivity() {
         }
     }
 }
-val mapOptions = arrayListOf("Classic", "New York", "The Matrix", "Cold Sea", "Infiltration", "Galaxy", "Grimace", "Deltarune")
+val mapOptions = arrayListOf("Classic", "New York", "The Matrix", "Cold Sea", "Infiltration", "Galaxy", "Grimace", "Deltarune", "House")
 const val OPTION_TITLE = 20;
 
 // state to send to the chromecast
