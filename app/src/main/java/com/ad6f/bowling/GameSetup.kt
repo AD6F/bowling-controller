@@ -39,7 +39,7 @@ import com.ad6f.bowling.services.cast.CastInfo
 import com.ad6f.bowling.components.gamesetup.AddPlayerDialog
 import com.ad6f.bowling.components.Navbar
 import com.ad6f.bowling.services.cast.SessionManagerListenerImpl
-import com.ad6f.bowling.ui.theme.MyApplicationTheme
+import com.ad6f.bowling.ui.theme.BowlingControllerTheme
 import com.google.android.gms.cast.framework.CastContext
 import org.json.JSONArray
 import org.json.JSONObject
@@ -65,7 +65,7 @@ class GameSetup : ComponentActivity() {
         SessionManagerListenerImpl.gameSetup = this
 
         setContent {
-            MyApplicationTheme {
+            BowlingControllerTheme {
                 val context = LocalContext.current;
 
                 Surface(

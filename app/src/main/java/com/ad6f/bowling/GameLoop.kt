@@ -31,7 +31,7 @@ import com.ad6f.bowling.services.cast.CastInfo
 import com.ad6f.bowling.services.cast.CastPage
 import com.ad6f.bowling.services.cast.SessionManagerListenerImpl
 import com.ad6f.bowling.services.sensors.SensorManagement
-import com.ad6f.bowling.ui.theme.MyApplicationTheme
+import com.ad6f.bowling.ui.theme.BowlingControllerTheme
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.cast.framework.CastSession
 import java.util.Timer
@@ -113,7 +113,7 @@ class GameLoop : ComponentActivity() {
                 finish()
             }
 
-            MyApplicationTheme {
+            BowlingControllerTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),

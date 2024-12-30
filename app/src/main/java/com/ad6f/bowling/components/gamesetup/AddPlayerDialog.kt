@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.ad6f.bowling.components.GenericDialog
 import com.ad6f.bowling.ui.theme.DarkColorScheme
 import com.ad6f.bowling.ui.theme.LightColorScheme
-import com.ad6f.bowling.ui.theme.MyApplicationTheme
+import com.ad6f.bowling.ui.theme.BowlingControllerTheme
 
 enum class ErrorType(val value: String) {
     NONE(""),
