@@ -2,6 +2,11 @@
 
 This is the remote control for the [Bowling Game](https://github.com/AD6F/cast-bowling) made for Android devices.
 
+## Contributors
+
+- [@AchrafGroiez](https://github.com/AchrafGroiez) -> [This](https://github.com/AD6F/bowling-controller/)
+- [@JF195](https://www.github.com/JF195) -> [Chromecast game](https://github.com/AD6F/cast-bowling)
+
 ## Technologies
 
 - Google Cast SDK
