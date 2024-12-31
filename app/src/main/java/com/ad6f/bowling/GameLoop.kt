@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.ad6f.bowling.components.gameloop.EndGameDialog
+import com.ad6f.bowling.components.gameloop.FailedLaunchDialog
 import com.ad6f.bowling.components.gameloop.GameNavbar
 import com.ad6f.bowling.components.gameloop.LaunchButton
 import com.ad6f.bowling.components.gameloop.LaunchInstruction
@@ -34,10 +35,12 @@ import com.ad6f.bowling.services.sensors.SensorManagement
 import com.ad6f.bowling.ui.theme.BowlingControllerTheme
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.cast.framework.CastSession
+import java.util.NoSuchElementException
 import java.util.Timer
 import kotlin.concurrent.schedule
 
 var isPauseMenuVisible by mutableStateOf(false)
+var isFailedLaunchVisible by mutableStateOf(false)
 var isSetupLoadingVisible by mutableStateOf(true)
 var isLaunchingLoadingVisible by mutableStateOf(false)
 var isEndGameVisible by mutableStateOf(false)
@@ -61,7 +64,6 @@ class GameLoop : ComponentActivity() {
                 if (isSetupLoadingVisible) {
                     Timer().schedule(1000) {
                         isSetupLoadingVisible = false
-                        println("TASKING")
                     }
                 }
 
@@ -96,12 +98,22 @@ class GameLoop : ComponentActivity() {
             sensorManagement = SensorManagement(
                 getSystemService(Context.SENSOR_SERVICE) as SensorManager
             ) {
-                isLaunchingLoadingVisible = true
-                val castSession =
-                    CastContext.getSharedInstance(context).sessionManager.currentCastSession!!
+                try {
+                    isLaunchingLoadingVisible = true
 
-                castSession.sendMessage(CastInfo.GAME_NAMESPACE, sensorManagement!!.getJsonData())
-                sensorManagement?.close()
+                    val data = sensorManagement!!.getJsonData();
+
+                    val castSession =
+                        CastContext.getSharedInstance(context).sessionManager.currentCastSession!!
+
+                    castSession.sendMessage(CastInfo.GAME_NAMESPACE, data)
+                } catch (_: NoSuchElementException) {
+                    isLaunchingLoadingVisible = false
+                    isFailedLaunchVisible = true
+                }
+                finally {
+                    sensorManagement?.close()
+                }
             }
 
             fun goToMainMenu() {
@@ -139,6 +151,11 @@ class GameLoop : ComponentActivity() {
                         mainMenuAction = { goToMainMenu() }
                     )
 
+                    FailedLaunchDialog(isFailedLaunchVisible) {
+                        isFailedLaunchVisible = false
+                        isLaunchPressed = false
+                    }
+
                     Column {
                         GameNavbar(
                             canOpenMenu = !isLaunchPressed
@@ -149,7 +166,10 @@ class GameLoop : ComponentActivity() {
                         Column(
                             Modifier
                                 .fillMaxWidth()
-                                .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceBetween) {
+                                .fillMaxHeight(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceBetween
+                        ) {
                             PlayerTurnMessage(currentPlayer)
                             LaunchInstruction(isLaunchPressed)
 

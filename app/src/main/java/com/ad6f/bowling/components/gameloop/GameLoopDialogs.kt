@@ -1,5 +1,7 @@
 package com.ad6f.bowling.components.gameloop
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +10,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import com.ad6f.bowling.R
 import com.ad6f.bowling.components.GenericDialog
 
@@ -54,7 +58,7 @@ fun LaunchLoadingDialog(isVisible: Boolean) {
 
 @Composable
 fun PauseMenuDialog(isVisible: Boolean, resumeAction: () -> Unit, mainMenuAction: () -> Unit) {
-    GenericDialog(isVisible, title = {CenteredTitle("Pause Menu")}) {
+    GenericDialog(isVisible, title = { CenteredTitle("Pause Menu") }) {
         Column {
             MenuButton("Resume", resumeAction)
             MenuButton("Main Menu", mainMenuAction)
@@ -74,6 +78,31 @@ fun EndGameDialog(isVisible: Boolean, replayAction: () -> Unit, mainMenuAction: 
         Column {
             MenuButton("Replay", replayAction)
             MenuButton("Main Menu", mainMenuAction)
+        }
+    }
+}
+
+@Composable
+fun FailedLaunchDialog(isVisible: Boolean, close: () -> Unit) {
+    if (isVisible) {
+        GenericDialog(
+            okButton = {
+                Button(close) {
+                    Text("Ok")
+                }
+            },
+            title = {
+                Text("Bowling")
+            },
+            isVisible = isVisible
+        ) {
+            Column {
+                Text("Your launch was not powerful enough, try again.")
+                Image(
+                    painter = painterResource(R.drawable.failed_launch),
+                    contentDescription = "Not enough."
+                )
+            }
         }
     }
 }

@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.ad6f.bowling.components.mainmenu.ErrorCastDialog;
 import com.ad6f.bowling.components.mainmenu.LoadingCastDialog;
 import com.ad6f.bowling.services.cast.SessionManagerListenerImpl;
-import com.ad6f.bowling.BuildConfig;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
