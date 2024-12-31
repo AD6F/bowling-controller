@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,6 +25,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
@@ -208,8 +210,8 @@ fun PlayerSetup() {
             ) {
                 Text(fontSize = OPTION_TITLE.sp, text = "Players")
 
-                Button(enabled = players.size < 4, onClick = { isDialogShown = true }) {
-                    Icon(Icons.Filled.Add, contentDescription = "Add player")
+                IconButton(enabled = players.size < 4, onClick = { isDialogShown = true }) {
+                    Icon(Icons.Filled.Add, contentDescription = "Add player", modifier = Modifier.size(35.dp))
                 }
             }
 
