@@ -4,7 +4,7 @@ This is the remote control for the [Bowling Game](https://github.com/AD6F/cast-b
 
 ## Contributors
 
-- [@AchrafGroiez](https://github.com/AchrafGroiez) -> [This](https://github.com/AD6F/bowling-controller/)
+- [@AchrafGroiez](https://github.com/AchrafGroiez) -> [Android Controller (this)](https://github.com/AD6F/bowling-controller/)
 - [@JF195](https://www.github.com/JF195) -> [Chromecast game](https://github.com/AD6F/cast-bowling)
 
 ## Technologies
