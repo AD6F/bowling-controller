@@ -25,25 +25,15 @@ class SensorCalculator(
         return percentsList.last()
     }
 
-    fun start() {
-        if (!isListening) {
-            isListening = true
-        }
-    }
-
-    fun close() {
-        if (isListening) {
-            percentsList.clear()
-            isListening = false
-        }
-    }
-
     fun registerListener(sensorManager: SensorManager) {
         sensorManager.registerListener(this, sensor, 1)
+        isListening = true
     }
 
     fun unregisterListener(sensorManager: SensorManager) {
         sensorManager.unregisterListener(this)
+        percentsList.clear()
+        isListening = false
     }
 
     override fun onSensorChanged(event: SensorEvent) {
@@ -58,5 +48,7 @@ class SensorCalculator(
         }
     }
 
-    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
+        println(accuracy);
+    }
 }

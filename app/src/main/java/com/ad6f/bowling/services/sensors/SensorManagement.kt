@@ -22,42 +22,25 @@ class SensorManagement(private val sensorManager: SensorManager, sendData: () ->
         coordinate = Coordinate.X
     )
 
-    fun unregisterListeners() {
-        if (isRegister) {
-            linearCalculator.unregisterListener(sensorManager)
-            rotationCalculator.unregisterListener(sensorManager)
-            gravityCalculator.unregisterListener(sensorManager)
-            isRegister = false
-        }
-    }
-
-    fun registerListeners() {
-        if (!isRegister) {
-            linearCalculator.registerListener(sensorManager)
-            rotationCalculator.registerListener(sensorManager)
-            gravityCalculator.registerListener(sensorManager)
-            isRegister = true
-        }
-    }
-
     fun start() {
-        linearCalculator.start()
-        rotationCalculator.start()
-        gravityCalculator.start()
+        if (isRegister) return
+
+        linearCalculator.registerListener(sensorManager)
+        rotationCalculator.registerListener(sensorManager)
+        gravityCalculator.registerListener(sensorManager)
+        isRegister = true
     }
 
     fun close() {
-        linearCalculator.close()
-        rotationCalculator.close()
-        gravityCalculator.close()
+        if (!isRegister) return
+
+        linearCalculator.unregisterListener(sensorManager)
+        rotationCalculator.unregisterListener(sensorManager)
+        gravityCalculator.unregisterListener(sensorManager)
+        isRegister = false
     }
 
     fun getJsonData(): String {
         return "{\"rotation\":${rotationCalculator.getBestPercent()}, \"force\":${linearCalculator.getBestPercent()}, \"tilt\":${gravityCalculator.getLastPercent()}}"
-    }
-
-    // Code that will be executed after a object is instanced.
-    init {
-        this.registerListeners()
     }
 }

@@ -31,6 +31,6 @@
     <string name="title_activity_game_setup">GameSetup</string>
     <string name="title_activity_home">Home</string>
     <string name="title_activity_game_loop">GameLoop</string>
-    <string name="version">Version 1.1.3</string>
+    <string name="version">Version 1.1.41</string>
     <string name="credits">Credits</string>
 </resources>
