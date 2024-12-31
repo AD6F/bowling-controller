@@ -129,7 +129,7 @@ val mapOptions = arrayListOf(
     Map("Grimace", R.drawable.map_grimace),
     Map("Deltarune", R.drawable.map_deltarune),
     Map("House", R.drawable.map_house),
-    Map("School", R.drawable.map_school),
+    Map("School", R.drawable.map_school)
 )
 
 const val OPTION_TITLE = 20;
