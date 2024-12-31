@@ -4,11 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,20 +15,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.sharp.KeyboardArrowDown
+import androidx.compose.material.icons.sharp.KeyboardArrowUp
 import androidx.compose.material3.Button
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -40,8 +39,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,8 +48,6 @@ import com.ad6f.bowling.components.gamesetup.AddPlayerDialog
 import com.ad6f.bowling.components.Navbar
 import com.ad6f.bowling.services.cast.SessionManagerListenerImpl
 import com.ad6f.bowling.ui.theme.BowlingControllerTheme
-import com.ad6f.bowling.ui.theme.DarkColorScheme
-import com.ad6f.bowling.ui.theme.LightColorScheme
 import com.google.android.gms.cast.framework.CastContext
 import org.json.JSONArray
 import org.json.JSONObject
@@ -85,19 +80,23 @@ class GameSetup : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column(modifier = Modifier.padding(20.dp)) {
+                    Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         Navbar(
                             backSending = { startActivity(Intent(context, MainMenu::class.java)) },
                             pageTitle = "Bowling Setup",
                             canGoNext = players.isNotEmpty(),
                             nextSending = {
-                                val castSession = CastContext.getSharedInstance(context).sessionManager.currentCastSession
+                                val castSession =
+                                    CastContext.getSharedInstance(context).sessionManager.currentCastSession
                                 val jsonObject = JSONObject()
 
                                 jsonObject.put("players", JSONArray(players))
                                 jsonObject.put("round", round(roundOptionValue))
                                 jsonObject.put("map", mapOptions.indexOf(mapOptionValue))
-                                castSession?.sendMessage(CastInfo.SETTING_NAMESPACE, jsonObject.toString())
+                                castSession?.sendMessage(
+                                    CastInfo.SETTING_NAMESPACE,
+                                    jsonObject.toString()
+                                )
                                 GameLoop.reset()
                                 context.startActivity(Intent(context, GameLoop::class.java))
                                 finish()
@@ -111,7 +110,18 @@ class GameSetup : ComponentActivity() {
         }
     }
 }
-val mapOptions = arrayListOf("Classic", "New York", "The Matrix", "Cold Sea", "Infiltration", "Galaxy", "Grimace", "Deltarune", "House")
+
+val mapOptions = arrayListOf(
+    "Classic",
+    "New York",
+    "The Matrix",
+    "Cold Sea",
+    "Infiltration",
+    "Galaxy",
+    "Grimace",
+    "Deltarune",
+    "House"
+)
 const val OPTION_TITLE = 20;
 
 // state to send to the chromecast
@@ -124,27 +134,52 @@ var mapOptionValue by mutableStateOf(mapOptions[0])
  */
 @Composable
 fun RoundSetup() {
-    Text(fontSize = OPTION_TITLE.sp, text = "Round(${round(roundOptionValue).toInt()})")
-    Slider(valueRange = 4f..10f, steps = 5, value = roundOptionValue, onValueChange = {roundOptionValue = it})
+    Column {
+        Text(fontSize = OPTION_TITLE.sp, text = "Round(${round(roundOptionValue).toInt()})")
+        Slider(
+            valueRange = 4f..10f,
+            steps = 5,
+            value = roundOptionValue,
+            onValueChange = { roundOptionValue = it })
+    }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapSetup() {
+    var width = 300.dp
     var expanded by rememberSaveable { mutableStateOf(false) }
 
     Column {
         Text(fontSize = OPTION_TITLE.sp, text = "Alley Theme")
 
-        OutlinedButton(
-            shape = RoundedCornerShape(12),
-            border = BorderStroke(2.dp, (if (isSystemInDarkTheme()) DarkColorScheme.primary else LightColorScheme.primary)),
-            onClick = { expanded = !expanded},
-            modifier = Modifier.width(120.dp)
-        ) {
-            Text(mapOptionValue, color = (if (isSystemInDarkTheme()) DarkColorScheme.scrim else LightColorScheme.scrim))
-        }
+        TextField(
+            modifier = Modifier
+                .clickable { expanded = !expanded }
+                .width(width),
+            value = mapOptionValue,
+            readOnly = true,
+            enabled = false,
+            onValueChange = {},
+            colors = TextFieldDefaults.colors()
+                .copy(
+                    disabledTextColor = MaterialTheme.colorScheme.scrim,
+                    disabledTrailingIconColor = MaterialTheme.colorScheme.scrim,
+                    disabledIndicatorColor = if (expanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                ),
+            trailingIcon = {
+                Icon(
+                    (if (expanded) Icons.Sharp.KeyboardArrowUp else Icons.Sharp.KeyboardArrowDown),
+                    "DropDownArrow",
+                )
+            },
+        )
 
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.width(width)
+        ) {
             mapOptions.forEach {
                 DropdownMenuItem(
                     text = { Text(it) },
@@ -153,8 +188,8 @@ fun MapSetup() {
             }
         }
     }
-
 }
+
 /**
  * The component that contains all the components related to players setup.
  */
@@ -162,7 +197,7 @@ fun MapSetup() {
 fun PlayerSetup() {
     var isDialogShown by rememberSaveable { mutableStateOf(false) }
 
-    AddPlayerDialog(isDialogShown, setIsVisible = {isDialogShown = it}, players = players)
+    AddPlayerDialog(isDialogShown, setIsVisible = { isDialogShown = it }, players = players)
 
     Row {
         Column {
@@ -173,19 +208,19 @@ fun PlayerSetup() {
             ) {
                 Text(fontSize = OPTION_TITLE.sp, text = "Players")
 
-                Button(enabled = players.size < 4, onClick = {isDialogShown = true}) {
+                Button(enabled = players.size < 4, onClick = { isDialogShown = true }) {
                     Icon(Icons.Filled.Add, contentDescription = "Add player")
                 }
             }
 
-            if(players.size == 0) {
+            if (players.size == 0) {
                 Column {
                     Text(text = "No player found")
                 }
             }
 
             LazyColumn {
-                items (players) {player ->
+                items(players) { player ->
                     Button(onClick = { players.remove(player) }) {
                         Text(player)
                     }
@@ -198,7 +233,7 @@ fun PlayerSetup() {
 @Preview
 @Composable
 fun GameOptions() {
-    Column {
+    Column(verticalArrangement = Arrangement.spacedBy(30.dp)) {
         RoundSetup()
         MapSetup()
         PlayerSetup()

@@ -48,7 +48,5 @@ class SensorCalculator(
         }
     }
 
-    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
-        println(accuracy);
-    }
+    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
 }
