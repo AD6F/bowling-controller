@@ -4,7 +4,7 @@
 
 ### Main menu
 
-![MainMenu](https://github.com/user-attachments/assets/0e12976b-c0dc-4a50-8ba6-567aac935d1d)
+![MainMenu](https://github.com/user-attachments/assets/433ecfb8-c9e8-4cca-ba43-ef0cce677fee)
 
 ### Game setup
 
@@ -12,24 +12,24 @@
 
 ### Setup bowling popup
 
-![SetupBowlingPopup](https://github.com/user-attachments/assets/65092ac1-c5e3-4a59-bcd9-30b021316388)
+![SetupBowlingPopup](https://github.com/user-attachments/assets/e84e0321-d1c8-4936-91ac-1d4f62de9f01)
 
 ### Launch screen
 
-![LaunchScreen](https://github.com/user-attachments/assets/27f4acfe-fcf5-4d29-b899-9fa23efbbac2)
+![LaunchScreen](https://github.com/user-attachments/assets/b216c35e-c08c-441a-b46a-7698e0abf4c4)
 
-### Popup after a launch 
+### Popup after a launch
 
-![PopupAfterALaunch](https://github.com/user-attachments/assets/ba1aa264-33bc-4315-a44a-233210c78026)
+![PopupAfterALaunch](https://github.com/user-attachments/assets/2dc14419-e409-43b0-9b16-1ab9498fbdae)
 
 ### Pause menu popup
 
-![PauseMenuPopup](https://github.com/user-attachments/assets/92b19953-80f6-44c6-91d1-deaf38bc4cac)
+![PauseMenuPopup](https://github.com/user-attachments/assets/8b60eec1-f62c-435d-a305-ec699bbf6463)
 
 ### Launch not powerful popup
 
-![LaunchNotPowerful](https://github.com/user-attachments/assets/9c2068b5-f4f8-475f-a32e-ee6c0a4d57e8)
+![LaunchNotPowerfulPopup](https://github.com/user-attachments/assets/e1e198fb-e71b-4ca7-a322-93035ad83322)
 
 ### End Game popup
 
-![EndGamePopup](https://github.com/user-attachments/assets/b1f58cba-f650-48af-aa79-4d28ef96cc87)
+![EndGamePopup](https://github.com/user-attachments/assets/ff9d11e1-8f31-4de8-b75e-4b06e5ebd9e8)
