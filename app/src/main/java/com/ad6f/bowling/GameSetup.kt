@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,8 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.sharp.KeyboardArrowDown
@@ -45,9 +44,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ad6f.bowling.services.cast.CastInfo
-import com.ad6f.bowling.components.gamesetup.AddPlayerDialog
 import com.ad6f.bowling.components.Navbar
+import com.ad6f.bowling.components.gamesetup.AddPlayerDialog
+import com.ad6f.bowling.services.cast.CastInfo
 import com.ad6f.bowling.services.cast.SessionManagerListenerImpl
 import com.ad6f.bowling.ui.theme.BowlingControllerTheme
 import com.google.android.gms.cast.framework.CastContext
@@ -82,7 +81,10 @@ class GameSetup : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Column(
+                        modifier = Modifier.padding(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
                         Navbar(
                             backSending = { startActivity(Intent(context, MainMenu::class.java)) },
                             pageTitle = "Bowling Setup",
@@ -211,7 +213,11 @@ fun PlayerSetup() {
                 Text(fontSize = OPTION_TITLE.sp, text = "Players")
 
                 IconButton(enabled = players.size < 4, onClick = { isDialogShown = true }) {
-                    Icon(Icons.Filled.Add, contentDescription = "Add player", modifier = Modifier.size(35.dp))
+                    Icon(
+                        Icons.Filled.Add,
+                        contentDescription = "Add player",
+                        modifier = Modifier.size(35.dp)
+                    )
                 }
             }
 
@@ -221,10 +227,10 @@ fun PlayerSetup() {
                 }
             }
 
-            LazyColumn {
-                items(players) { player ->
-                    Button(onClick = { players.remove(player) }) {
-                        Text(player)
+            Column {
+                players.forEach {
+                    Button(onClick = { players.remove(it) }) {
+                        Text(it)
                     }
                 }
             }
@@ -235,7 +241,12 @@ fun PlayerSetup() {
 @Preview
 @Composable
 fun GameOptions() {
-    Column(verticalArrangement = Arrangement.spacedBy(30.dp)) {
+    val scrollState = rememberScrollState()
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(30.dp),
+        modifier = Modifier.verticalScroll(scrollState)
+    ) {
         RoundSetup()
         MapSetup()
         PlayerSetup()
