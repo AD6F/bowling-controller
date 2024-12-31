@@ -2,6 +2,12 @@
 
 This is the remote control for the [Bowling Game](https://github.com/AD6F/cast-bowling) made in the Human-Machine Interfaces class at Cegep Marie-Victorin.
 
+## Technologies
+
+- Google Cast SDK
+- Jetpack Compose
+- Compose Material 3
+
 ## Preview
 
 ### Main menu
