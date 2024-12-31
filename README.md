@@ -7,6 +7,8 @@ This is the remote control for the [Bowling Game](https://github.com/AD6F/cast-b
 - Google Cast SDK
 - Jetpack Compose
 - Compose Material 3
+- Kotlin
+- Java
 
 ## Preview
 
