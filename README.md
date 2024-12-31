@@ -1,6 +1,6 @@
 # Bowling Controller
 
-This is the remote control for the [Bowling Game](https://github.com/AD6F/cast-bowling) made in the Human-Machine Interfaces class at Cegep Marie-Victorin.
+This is the remote control for the [Bowling Game](https://github.com/AD6F/cast-bowling) made for Android devices.
 
 ## Technologies
 
