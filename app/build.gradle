@@ -12,7 +12,7 @@ android {
         minSdk 27
         targetSdk 34
         versionCode 1
-        versionName "1.1.41"
+        versionName "1.1.42"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -36,6 +36,7 @@ android {
     buildFeatures {
         compose true
         viewBinding true
+        buildConfig true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.5.14'

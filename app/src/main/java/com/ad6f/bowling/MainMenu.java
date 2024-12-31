@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+
 import com.ad6f.bowling.components.mainmenu.ErrorCastDialog;
 import com.ad6f.bowling.components.mainmenu.LoadingCastDialog;
 import com.ad6f.bowling.services.cast.SessionManagerListenerImpl;
+import com.ad6f.bowling.BuildConfig;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
@@ -22,9 +25,12 @@ public class MainMenu extends AppCompatActivity {
 
     public static boolean isErrorDialog = false;
 
+    public TextView versionText = null;
+
     public void refreshButton() {
         findViewById(R.id.play).setEnabled(areButtonVisible);
     }
+
 
     public void setAreButtonVisible(boolean areButtonVisible) {
         MainMenu.areButtonVisible = areButtonVisible;
@@ -35,6 +41,7 @@ public class MainMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        versionText = findViewById(R.id.version);
 
         if(loadingCastDialog == null) {
             loadingCastDialog = new LoadingCastDialog(this);
@@ -81,5 +88,6 @@ public class MainMenu extends AppCompatActivity {
         refreshButton();
         loadingCastDialog.refresh(isCastLoading);
         errorCastDialog.refresh(isErrorDialog);
+        versionText.setText(String.format("Version %s", BuildConfig.VERSION_NAME));
     }
 }
