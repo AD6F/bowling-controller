@@ -4,12 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -22,7 +25,6 @@ import androidx.compose.material.icons.sharp.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,7 +42,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -115,17 +119,20 @@ class GameSetup : ComponentActivity() {
     }
 }
 
+data class Map(val name: String, val imageId: Int);
+
 val mapOptions = arrayListOf(
-    "Classic",
-    "New York",
-    "The Matrix",
-    "Cold Sea",
-    "Infiltration",
-    "Galaxy",
-    "Grimace",
-    "Deltarune",
-    "House"
+    Map("Classic", R.drawable.map_classic),
+    Map("New York", R.drawable.map_new_york),
+    Map("The Matrix", R.drawable.map_matrix),
+    Map("Cold Sea", R.drawable.map_cold_sea),
+    Map("Infiltration", R.drawable.map_infiltration),
+    Map("Galaxy", R.drawable.map_galaxy),
+    Map("Grimace", R.drawable.map_grimace),
+    Map("Deltarune", R.drawable.map_deltarune),
+    Map("House", R.drawable.map_house),
 )
+
 const val OPTION_TITLE = 20;
 
 // state to send to the chromecast
@@ -148,10 +155,9 @@ fun RoundSetup() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapSetup() {
-    var width = 300.dp
+    val width = 300.dp
     var expanded by rememberSaveable { mutableStateOf(false) }
 
     Column {
@@ -161,7 +167,7 @@ fun MapSetup() {
             modifier = Modifier
                 .clickable { expanded = !expanded }
                 .width(width),
-            value = mapOptionValue,
+            value = mapOptionValue.name,
             readOnly = true,
             enabled = false,
             onValueChange = {},
@@ -179,6 +185,15 @@ fun MapSetup() {
             },
         )
 
+        Image(
+            painter = painterResource(mapOptionValue.imageId),
+            contentDescription = "Not enough.",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .width(width)
+                .height(width)
+        )
+
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
@@ -186,7 +201,7 @@ fun MapSetup() {
         ) {
             mapOptions.forEach {
                 DropdownMenuItem(
-                    text = { Text(it) },
+                    text = { Text(it.name) },
                     onClick = { mapOptionValue = it; expanded = false; }
                 )
             }
