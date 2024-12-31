@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -157,7 +159,6 @@ fun RoundSetup() {
 
 @Composable
 fun MapSetup() {
-    val width = 300.dp
     var expanded by rememberSaveable { mutableStateOf(false) }
 
     Column {
@@ -166,7 +167,7 @@ fun MapSetup() {
         TextField(
             modifier = Modifier
                 .clickable { expanded = !expanded }
-                .width(width),
+                .fillMaxWidth(),
             value = mapOptionValue.name,
             readOnly = true,
             enabled = false,
@@ -190,14 +191,15 @@ fun MapSetup() {
             contentDescription = "Not enough.",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier
-                .width(width)
-                .height(width)
+                .fillMaxWidth()
+                .height(350.dp)
         )
 
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier.width(width)
+            modifier = Modifier
+                .fillMaxWidth(0.75f)
         ) {
             mapOptions.forEach {
                 DropdownMenuItem(
