@@ -15,6 +15,20 @@ This is the remote control for the [Bowling Game](https://github.com/AD6F/cast-b
 - Kotlin
 - Java
 
+## Installation
+
+### External dependencies
+
+- [Android Studio Ladybug](https://developer.android.com/studio)
+- [JDK 17](https://www.oracle.com/ca-en/java/technologies/downloads/#java17)
+- You will need an **Android phone** with `SDK 34`, preferably, or one that is at least `SDK 27`.
+
+### Setup
+
+1. Import the project into Android Studio and let it compile.
+2. Connect your phone to your computer.
+3. Run the application.
+
 ## Preview
 
 ### Main menu
