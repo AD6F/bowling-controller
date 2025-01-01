@@ -1,35 +1,11 @@
 <resources>
     <string name="app_name">Bowling Game</string>
-    <string name="round">Round</string>
-    <string name="bowling_setup">Bownling Setup</string>
     <string name="main_menu_title">Bowling game</string>
     <string name="play">Play</string>
-    <string name="setting">Setting</string>
-    <string name="leave">Leave</string>
-    <string-array name="map_option">
-        <item>New York</item>
-        <item>Undercover</item>
-        <item>Cold Sea</item>
-        <item>Infiltration</item>
-    </string-array>
-    <string name="game_option">GameOption</string>
+    <string name="choose">choose</string>
+    <string name="title_activity_game_setup">GameSetup</string>
+    <string name="title_activity_game_loop">GameLoop</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-    <string name="map">Map</string>
-    <string name="back">Back</string>
-    <string name="player">Player :</string>
-    <string name="none">None</string>
-    <string name="add">+</string>
-    <string name="title_activity_main">MainMenu</string>
-    <string name="connect_your_chromecast">Connect your Chromecast</string>
-    <string name="choose">choose</string>
-    <string name="sendjson">sendjson</string>
-    <string name="add_player">add player</string>
-    <string name="title_activity_game_setup">GameSetup</string>
-    <string name="title_activity_home">Home</string>
-    <string name="title_activity_game_loop">GameLoop</string>
-    <string name="credits">Credits</string>
 </resources>
