@@ -12,7 +12,7 @@ android {
         minSdk 27
         targetSdk 34
         versionCode 1
-        versionName "1.1.635"
+        versionName "1.1.637"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -49,10 +49,6 @@ android {
 }
 
 dependencies {
-    // Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.32'
-    annotationProcessor 'org.projectlombok:lombok:1.18.32'
-
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
@@ -89,6 +85,4 @@ dependencies {
     androidTestImplementation platform('androidx.compose:compose-bom:2024.12.01')
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
-
-    annotationProcessor 'org.projectlombok:lombok:1.18.32'
 }
