@@ -1,6 +1,6 @@
 # Bowling Controller
 
-This is the remote control for the [Bowling Game](https://github.com/AD6F/cast-bowling) made for Android devices.
+This is the [Bowling Game](https://github.com/AD6F/cast-bowling) remote control for Android.
 
 ## Contributors
 
